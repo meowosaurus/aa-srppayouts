@@ -1,0 +1,52 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+    "hatchling",
+]
+
+[project]
+name = "aa-srppayouts-plugin"
+description = "srppayouts Plugin for Alliance Auth (GitHub Version)"
+readme = "README.md"
+keywords = [
+    "allianceauth",
+    "srppayouts",
+]
+license = {file = "LICENSE"}
+authors = [
+    { name = "Peter Pfeufer", email = "develop@ppfeufer.de" },
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dynamic = [
+    "version",
+]
+dependencies = [
+    "allianceauth>=3.6.1",
+]
+[project.urls]
+Changelog = "https://github.com/ppfeufer/aa-srppayouts-plugin/blob/master/CHANGELOG.md"
+"Issue / Bug Reports" = "https://github.com/ppfeufer/aa-srppayouts-plugin/issues"
+
+[tool.hatch.version]
+path = "srppayouts/__init__.py"
+
+[tool.hatch.build]
+include = [
+    "/srppayouts",
+]

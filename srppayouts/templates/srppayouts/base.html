@@ -1,0 +1,18 @@
+{% extends 'allianceauth/base-bs5.html' %}
+{% load i18n %}
+
+{% block page_title %}
+    SRP Payouts
+{% endblock %}
+
+{% block content %}
+    {% block details %}{% endblock %}
+{% endblock %}
+
+{% block header_nav_collapse_left %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'srppayouts:index' %}">
+        View Payouts
+    </a>
+</li>
+{% endblock %}

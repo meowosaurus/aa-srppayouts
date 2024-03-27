@@ -1,0 +1,125 @@
+{% extends 'srppayouts/base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load icons_tags %}
+
+{% block details %}
+
+<div class="row">
+    <div class="col-sm-4">
+        {% if False %}
+        Show 
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                50
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a class="dropdown-item" href="#">
+                        10
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        25
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        50
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        100
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        200
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        All
+                    </a>
+                </li>
+            </ul>
+        </div>
+        Ships
+        {% endif %}
+    </div>
+    <div class="col-sm-5">
+
+    </div>
+    <div class="col-sm-3">
+        <form method="get" action="{% url 'srppayouts:index' %}">
+            <div class="input-group mb-3">
+                {% if search %}
+                    <input type="text" class="form-control" value="{{ search }}" name="search">
+                {% else %}
+                    <input type="text" class="form-control" placeholder="Ship.." name="search">
+                {% endif %}
+                <button class="btn btn-secondary" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th width="{{ column_width }}%">Ship Name</th>
+            {% for column in columns %}
+            <th width="{{ column_width }}%">{{ column.name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row_data in matrix %}
+        <tr>
+            <td>
+              {% if row_data.0.ship_id is not 0 %}
+              <img src="https://image.eveonline.com/types/{{ row_data.0.ship_id }}/icon?size=32">
+              {% endif %}
+              <b>{{ row_data.0.name }}</b>
+            </td>
+            {% for cell in row_data|slice:"1:" %}
+            <td contenteditable="true">
+              {% if cell %}
+              {{ cell.value|intcomma }} ISK
+              {% else %}
+              0 ISK
+              {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-sm-4">
+        {% if False %}
+        Showing 1 to 50 of 205 entries
+        {% endif %}
+    </div>
+    <div class="col-sm-4">
+        
+    </div>
+    <div class="col-sm-4">
+        {% if False %}
+        <div class="btn-toolbar float-end" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+                <button type="button" class="btn btn-secondary">Previous</button>
+                <button type="button" class="btn btn-secondary">1</button>
+                <button type="button" class="btn btn-secondary">2</button>
+                <button type="button" class="btn btn-secondary">3</button>
+                <button type="button" class="btn btn-secondary">4</button>
+                <button type="button" class="btn btn-secondary">Next</button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block extra_script %}
+{% endblock %}
