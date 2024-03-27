@@ -23,7 +23,7 @@ This plugin was inspired by Goonswarm Federation's Affordable Care App.
 * [Meowosaurus](https://github.com/meowosaurus)
 
 ## Screenshots
-![Showcase](https://github.com/meowosaurus/aa-srppayouts/blob/master/images/main.png)
+![Showcase](https://github.com/meowosaurus/aa-srppayouts/blob/master/images/main_srp_list.png)
 
 ## Installation
 
