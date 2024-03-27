@@ -18,12 +18,13 @@ This plugin was inspired by Goonswarm Federation's Affordable Care App.
 # Current Features
 * Display a page with the maximum amount of ISK you're willing to reimburse 
 * Dynamically add new ships, new payouts or new reimbursement reasons (columns)
+* A simple search bar
 
 ### Active devs:
 * [Meowosaurus](https://github.com/meowosaurus)
 
 ## Screenshots
-![Showcase](https://github.com/meowosaurus/aa-srppayouts/blob/master/images/main_srp_list.png)
+![Showcase](https://github.com/meowosaurus/aa-srppayouts/blob/main/images/main_srp_list.png)
 
 ## Installation
 
