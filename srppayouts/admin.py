@@ -2,6 +2,7 @@
 
 # Django
 from django.contrib import admin 
+
 from .models import *
 
 # Adding search bars to admin panel

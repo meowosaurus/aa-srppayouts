@@ -4,7 +4,7 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import *
 
@@ -17,6 +17,11 @@ def index(request: WSGIRequest) -> HttpResponse:
     :return:
     """
 
+    if request.user.has_perm('srppayouts.admin_access'):
+        is_admin = True
+    else:
+        is_admin = False
+
     # Recalculate data if not available in memory
     if not cache.get('matrix'):
         recalculate_matrix()
@@ -28,6 +33,17 @@ def index(request: WSGIRequest) -> HttpResponse:
 
     context = {"columns": columns,
                "column_width": column_width,
-               "matrix": matrix}
+               "matrix": matrix,
+               "is_admin": is_admin}
 
     return render(request, "srppayouts/index.html", context)
+
+@login_required
+@permission_required("srppayouts.admin_access")
+def force_recalc(request: WSGIRequest) -> HttpResponse:
+
+    print("User " + request.user.profile.main_character.character_name + " forced a recalculation of the srp payouts table!")
+
+    recalculate_matrix()
+
+    return redirect('srppayouts:index')

@@ -25,7 +25,8 @@ class General(models.Model):
 
         managed = False
         default_permissions = ()
-        permissions = (("basic_access", "Can access this app"),)
+        permissions = (("basic_access", "Can access this app"),
+                       ("admin_access", "Can force to recalculate the table"),)
 
 class Ship(models.Model):
     name = models.CharField(max_length=255, blank=True, unique=True)

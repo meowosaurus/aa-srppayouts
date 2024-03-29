@@ -16,3 +16,13 @@
     </a>
 </li>
 {% endblock %}
+
+{% block header_nav_collapse_right %}
+{% if is_admin %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'srppayouts:force_recalc' %}">
+        Force Recalculation
+    </a>
+</li>
+{% endif %}
+{% endblock %}
