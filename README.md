@@ -1,4 +1,4 @@
-# SRPPayouts
+# SRP-Payouts
 A simple SRP table plugin, that offers dynamic rows and columns to show the maximum amount of ISK you're willing to reimburse if someone lost their ship. This plugin works independently from any SRP plugin and only offers you the table mechanics.
 
 This plugin was inspired by Goonswarm Federation's Affordable Care App.
@@ -19,6 +19,12 @@ This plugin was inspired by Goonswarm Federation's Affordable Care App.
 * Display a page with the maximum amount of ISK you're willing to reimburse 
 * Dynamically add new ships, new payouts or new reimbursement reasons (columns)
 * A simple search bar
+
+## TODO
+* Add sorting filters for each column
+* Add pagination
+* Add option to only show a certain amout of entries 
+* Add admin option to easily change payout values for one ship type
 
 ### Active devs:
 * [Meowosaurus](https://github.com/meowosaurus)
@@ -87,7 +93,6 @@ basic_access | None | Can view the payouts page
 
 ## Dependencies
 - [Alliance Auth](https://gitlab.com/allianceauth/allianceauth)
-- [allianceauth-app-utils](https://gitlab.com/ErikKalkoken/allianceauth-app-utils)
 
 This plugin only works with Alliance Auth 4.0.0 or above
 
