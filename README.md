@@ -18,10 +18,10 @@ This plugin was inspired by Goonswarm Federation's Affordable Care App.
 # Current Features
 * Display a page with the maximum amount of ISK you're willing to reimburse 
 * Dynamically add new ships, new payouts or new reimbursement reasons (columns)
-* A simple search bar
+* Simple search bar for the ship name
+* Sorting filters for each column
 
 ## TODO
-* Add sorting filters for each column
 * Add pagination
 * Add option to only show a certain amout of entries 
 * Add admin option to easily change payout values for one ship type

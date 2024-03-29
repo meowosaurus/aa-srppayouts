@@ -14,39 +14,16 @@ def add_example_payouts():
     cta_reimbursement = Reimbursement.objects.get(name="CTA", index=0)
     strat_reimbursement = Reimbursement.objects.get(name="Strategic", index=1)
     fun_reimbursement = Reimbursement.objects.get(name="Fun Fleet", index=2)
-    ferox = Ship.objects.get(name="Ferox")
-    osprey = Ship.objects.get(name="Osprey")
-    sabre = Ship.objects.get(name="Sabre")
-    cyclone = Ship.objects.get(name="Cyclone")
+    
     monitor = Ship.objects.get(name="Monitor")
-
-    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=ferox, value=100000000).exists():
-        Payout.objects.create(reimbursement=cta_reimbursement, ship=ferox, value=100000000)
-    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=ferox, value=70000000).exists():
-        Payout.objects.create(reimbursement=strat_reimbursement, ship=ferox, value=70000000)
-    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=ferox, value=30000000).exists():
-        Payout.objects.create(reimbursement=fun_reimbursement, ship=ferox, value=30000000)
-    
-    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=osprey, value=3000000).exists():
-        Payout.objects.create(reimbursement=cta_reimbursement, ship=osprey, value=30000000)
-    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=osprey, value=3000000).exists():
-        Payout.objects.create(reimbursement=strat_reimbursement, ship=osprey, value=30000000)
-    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=osprey, value=1500000).exists():
-        Payout.objects.create(reimbursement=fun_reimbursement, ship=osprey, value=15000000)
-
-    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=sabre, value=10000000).exists():
-        Payout.objects.create(reimbursement=cta_reimbursement, ship=sabre, value=100000000)
-    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=sabre, value=7000000).exists():
-        Payout.objects.create(reimbursement=strat_reimbursement, ship=sabre, value=70000000)
-    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=sabre, value=50000000).exists():
-        Payout.objects.create(reimbursement=fun_reimbursement, ship=sabre, value=50000000)
-    
-    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=cyclone, value=5000000).exists():
-        Payout.objects.create(reimbursement=cta_reimbursement, ship=cyclone, value=50000000)
-    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=cyclone, value=3000000).exists():
-        Payout.objects.create(reimbursement=strat_reimbursement, ship=cyclone, value=30000000)
-    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=cyclone, value=0).exists():
-        Payout.objects.create(reimbursement=fun_reimbursement, ship=cyclone, value=0)
+    eagle = Ship.objects.get(name="Eagle")
+    basilisk = Ship.objects.get(name="Basilisk")
+    claymore = Ship.objects.get(name="Claymore")
+    vulture = Ship.objects.get(name="Vulture")
+    huginn = Ship.objects.get(name="Huginn")
+    lachesis = Ship.objects.get(name="Lachesis")
+    sabre = Ship.objects.get(name="Sabre")
+    flycatcher = Ship.objects.get(name="Flycatcher")
 
     if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=monitor, value=300000000).exists():
         Payout.objects.create(reimbursement=cta_reimbursement, ship=monitor, value=300000000)
@@ -54,6 +31,62 @@ def add_example_payouts():
         Payout.objects.create(reimbursement=strat_reimbursement, ship=monitor, value=200000000)
     if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=monitor, value=0).exists():
         Payout.objects.create(reimbursement=fun_reimbursement, ship=monitor, value=0)
+
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=eagle, value=250000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=eagle, value=250000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=eagle, value=200000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=eagle, value=200000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=eagle, value=0).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=eagle, value=0)
+    
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=basilisk, value=260000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=basilisk, value=260000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=basilisk, value=260000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=basilisk, value=260000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=basilisk, value=150000000).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=basilisk, value=150000000)
+
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=claymore, value=450000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=claymore, value=450000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=claymore, value=450000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=claymore, value=450000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=claymore, value=0).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=claymore, value=0)
+
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=vulture, value=450000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=vulture, value=450000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=vulture, value=450000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=vulture, value=450000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=vulture, value=0).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=vulture, value=0)
+
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=huginn, value=350000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=huginn, value=350000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=huginn, value=350000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=huginn, value=350000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=huginn, value=0).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=huginn, value=0)
+
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=lachesis, value=400000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=lachesis, value=400000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=lachesis, value=400000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=lachesis, value=400000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=lachesis, value=0).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=lachesis, value=0)
+
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=sabre, value=100000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=sabre, value=100000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=sabre, value=100000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=sabre, value=100000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=sabre, value=100000000).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=sabre, value=100000000)
+
+    if not Payout.objects.filter(reimbursement=cta_reimbursement, ship=flycatcher, value=100000000).exists():
+        Payout.objects.create(reimbursement=cta_reimbursement, ship=flycatcher, value=100000000)
+    if not Payout.objects.filter(reimbursement=strat_reimbursement, ship=flycatcher, value=100000000).exists():
+        Payout.objects.create(reimbursement=strat_reimbursement, ship=flycatcher, value=100000000)
+    if not Payout.objects.filter(reimbursement=fun_reimbursement, ship=flycatcher, value=100000000).exists():
+        Payout.objects.create(reimbursement=fun_reimbursement, ship=flycatcher, value=100000000)
 
 def add_ships():
     if not Ship.objects.filter(name='Absolution', ship_id=22448).exists():

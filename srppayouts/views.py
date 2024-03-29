@@ -20,21 +20,16 @@ def index(request: WSGIRequest) -> HttpResponse:
     # Recalculate data if not available in memory
     if not cache.get('matrix'):
         recalculate_matrix()
-
-    query = request.GET.get('search', '')
-
-    # Depending on if search (query) was used, recalculate a temp matrix or use existing one
-    if query:
-        matrix = calculate_temp_matrix(query)
-    else:
-        matrix = cache.get('matrix')
+    
+    matrix = cache.get('matrix')
     
     columns = Reimbursement.objects.all().order_by("index")
     column_width = 100 / (columns.count() + 1)
+    rows_count = 100
 
     context = {"columns": columns,
                "column_width": column_width,
                "matrix": matrix,
-               "search": query}
+               "rows_count": rows_count}
 
     return render(request, "srppayouts/index.html", context)

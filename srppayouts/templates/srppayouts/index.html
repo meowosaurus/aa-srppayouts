@@ -7,61 +7,35 @@
 
 <div class="row">
     <div class="col-sm-4">
-        {% if False %}
-        Show 
-        <div class="btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                50
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                    <a class="dropdown-item" href="#">
-                        10
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        25
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        50
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        100
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        200
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        All
-                    </a>
-                </li>
-            </ul>
-        </div>
-        Ships
-        {% endif %}
     </div>
     <div class="col-sm-5">
 
     </div>
     <div class="col-sm-3">
-        <form method="get" action="{% url 'srppayouts:index' %}">
-            <div class="input-group mb-3">
-                {% if search %}
-                    <input type="text" class="form-control" value="{{ search }}" name="search">
-                {% else %}
-                    <input type="text" class="form-control" placeholder="Ship.." name="search">
-                {% endif %}
-                <button class="btn btn-secondary" type="submit">Search</button>
-            </div>
-        </form>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Search</span>
+            <input type="text" id="searchInput" placeholder="Ship.." class="form-control" id="basic-url" aria-describedby="basic-addon3">
+        </div>
     </div>
 </div>
 
-<table class="table table-striped">
+<table id="srpTable" class="table table-striped">
     <thead>
         <tr>
-            <th width="{{ column_width }}%">Ship Name</th>
+            <th>
+                
+            </th>
+            <th onclick="sortTable(1)" width="{{ column_width }}%">
+                <i class="fa-solid fa-sort" style="margin-right: 0.25rem;"></i>
+                Ship Name
+            </th>
             {% for column in columns %}
-            <th width="{{ column_width }}%">{{ column.name }}</th>
+            {% with count=forloop.counter %}
+            <th onclick="sortTable('{{ forloop.counter|add:1 }}')" width="{{ column_width }}%">
+                <i class="fa-solid fa-sort" style="margin-right: 0.25rem;"></i>
+                {{ column.name }}
+            </th>
+            {% endwith %}
             {% endfor %}
         </tr>
     </thead>
@@ -69,13 +43,16 @@
         {% for row_data in matrix %}
         <tr>
             <td>
+                <img src="https://image.eveonline.com/types/{{ row_data.0.ship_id }}/icon?size=32">
+            </td>
+            <td>
               {% if row_data.0.ship_id is not 0 %}
-              <img src="https://image.eveonline.com/types/{{ row_data.0.ship_id }}/icon?size=32">
+              
               {% endif %}
               <b>{{ row_data.0.name }}</b>
             </td>
             {% for cell in row_data|slice:"1:" %}
-            <td contenteditable="true">
+            <td>
               {% if cell %}
               {{ cell.value|intcomma }} ISK
               {% else %}
@@ -90,36 +67,152 @@
 
 <div class="row">
     <div class="col-sm-4">
-        {% if False %}
-        Showing 1 to 50 of 205 entries
-        {% endif %}
     </div>
     <div class="col-sm-4">
-        
     </div>
     <div class="col-sm-4">
-        {% if False %}
-        <div class="btn-toolbar float-end" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group me-2" role="group" aria-label="First group">
-                <button type="button" class="btn btn-secondary">Previous</button>
-                <button type="button" class="btn btn-secondary">1</button>
-                <button type="button" class="btn btn-secondary">2</button>
-                <button type="button" class="btn btn-secondary">3</button>
-                <button type="button" class="btn btn-secondary">4</button>
-                <button type="button" class="btn btn-secondary">Next</button>
-            </div>
+        <div id="showingCount" class="float-end">
+
         </div>
-        {% endif %}
     </div>
 </div>
 
 {% endblock %}
 
 {% block extra_javascript %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        updateShowingCount();
+    });
+
+    
+    var inputField = document.getElementById('searchInput');
+
+    inputField.addEventListener('input', function() {
+        searchSRP();
+        updateShowingCount();
+    });
+
+    function searchSRP() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("srpTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function updateShowingCount() {
+        var showingCount = document.getElementById("showingCount");
+
+        displayedCount = countEntries();
+        allCount = countAllEntries();
+
+        if (displayedCount > 1) {
+            showingCount.innerHTML = "Showing " + displayedCount + " entries of " + allCount + " entries";
+        } else if (displayedCount == 1) {
+            showingCount.innerHTML = "Showing 1 entry of " + allCount + " entries";
+        } else {
+            showingCount.innerHTML = "Showing 0 entries of " + allCount + " entries";
+        }
+    }
+
+    function countEntries() {
+        var table = document.getElementById("srpTable");
+
+        const allRows = document.querySelectorAll('tr');
+        let displayedCount = 0;
+
+        allRows.forEach(row => {
+            if (row.style.display !== 'none') {
+                displayedCount++;
+            }
+        });
+        displayedCount--;
+
+        return displayedCount;
+    }
+
+    function countAllEntries() {
+        var table = document.getElementById("srpTable");
+        var showingCount = document.getElementById("showingCount");
+
+        var rowCount = table.rows.length - 1;
+
+        return rowCount;
+    }
+
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("srpTable");
+        switching = true;
+        // Set the sorting direction to ascending:
+        dir = "asc";
+        /* Make a loop that will continue until
+        no switching has been done: */
+        while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+                // Start by saying there should be no switching:
+                shouldSwitch = false;
+                /* Get the two elements you want to compare,
+                one from current row and one from the next: */
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /* Check if the two rows should switch place,
+                based on the direction, asc or desc: */
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /* If a switch has been marked, make the switch
+                and mark that a switch has been done: */
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                // Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /* If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again. */
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>
 {% endblock %}
 
 {% block extra_css %}
 {% endblock %}
 
 {% block extra_script %}
+
 {% endblock %}
