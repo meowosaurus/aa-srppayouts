@@ -23,15 +23,15 @@
     <thead>
         <tr>
             <th>
-                
+                <!-- Used for the ships icon -->
             </th>
-            <th onclick="sortTable(1)" width="{{ column_width }}%">
+            <th style="cursor: pointer;" onclick="sortTable(1)" width="{{ column_width }}%">
                 <i class="fa-solid fa-sort" style="margin-right: 0.25rem;"></i>
                 Ship Name
             </th>
             {% for column in columns %}
             {% with count=forloop.counter %}
-            <th onclick="sortTable('{{ forloop.counter|add:1 }}')" width="{{ column_width }}%">
+            <th style="cursor: pointer;" onclick="sortTable('{{ forloop.counter|add:1 }}')" width="{{ column_width }}%">
                 <i class="fa-solid fa-sort" style="margin-right: 0.25rem;"></i>
                 {{ column.name }}
             </th>
@@ -85,7 +85,6 @@
         updateShowingCount();
     });
 
-    
     var inputField = document.getElementById('searchInput');
 
     inputField.addEventListener('input', function() {

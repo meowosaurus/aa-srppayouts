@@ -25,11 +25,9 @@ def index(request: WSGIRequest) -> HttpResponse:
     
     columns = Reimbursement.objects.all().order_by("index")
     column_width = 100 / (columns.count() + 1)
-    rows_count = 100
 
     context = {"columns": columns,
                "column_width": column_width,
-               "matrix": matrix,
-               "rows_count": rows_count}
+               "matrix": matrix}
 
     return render(request, "srppayouts/index.html", context)

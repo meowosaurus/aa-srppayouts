@@ -8,7 +8,9 @@ class Command(BaseCommand):
     prefix = "[" + __title__ + " " + __version__ + "] "
 
     def handle(self, *args, **kwargs):
-
-        self.stdout.write(self.prefix + 'Loading data might take a while.')
-        add_ships()
-        self.stdout.write(self.style.SUCCESS(self.prefix + 'Ship data successfully populated!'))
+        try:
+            self.stdout.write(self.prefix + 'Loading data might take a while.')
+            add_ships()
+            self.stdout.write(self.style.SUCCESS(self.prefix + 'Ship data successfully populated!'))
+        except Exception as e: 
+            self.stderr.write(self.prefix + "Unable to load ship data! Error: " + str(e))

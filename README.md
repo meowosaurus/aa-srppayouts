@@ -1,7 +1,7 @@
 # SRP-Payouts
 A simple SRP table plugin, that offers dynamic rows and columns to show the maximum amount of ISK you're willing to reimburse if someone lost their ship. This plugin works independently from any SRP plugin and only offers you the table mechanics.
 
-This plugin was inspired by Goonswarm Federation's Affordable Care App.
+This plugin was inspired by [Goonswarm Federation](https://evemaps.dotlan.net/alliance/Goonswarm_Federation)'s [Affordable Care App](https://affordablecare.goonfleet.com/home/viewPayouts).
 
 # Contents
 * [Current Features](#current-features)
@@ -43,6 +43,10 @@ This plugin was inspired by Goonswarm Federation's Affordable Care App.
 
 3.) Restart your server, then run migrations and collectstatic
 
+4.) Run `python manage.py srppayouts_load_data` to load most ship data
+
+5.) (Optional) Run `python manage.py srppayouts_load_example` to load example data
+
 #### Docker Version
 1.) Please make sure you followed the custom docker-image tutorial [here](https://gitlab.com/allianceauth/allianceauth/-/tree/master/docker#using-a-custom-docker-image): 
 
@@ -57,6 +61,10 @@ This plugin was inspired by Goonswarm Federation's Affordable Care App.
 7.) Run `auth migrate`
 
 8.) Run `auth collectstatic`
+
+9.) Run `auth srppayouts_load_data`
+
+10.) (Optional) Run `auth srppayouts_load_example` to load example data
 
 ### Alliance Auth Development 
 Make sure you have installed alliance auth in the correct way: https://allianceauth.readthedocs.io/en/latest/development/dev_setup/index.html
