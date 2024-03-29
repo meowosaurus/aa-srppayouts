@@ -1,31 +1,23 @@
 [build-system]
-build-backend = "hatchling.build"
-requires = [
-    "hatchling",
-]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
 
 [project]
 name = "aa-srppayouts"
-description = "SRP-Payouts Plugin for Alliance Auth (GitHub Version)"
+dynamic = ["version", "description"]
 readme = "README.md"
-keywords = [
-    "allianceauth",
-    "srppayouts",
-]
-license = {file = "LICENSE"}
-authors = [
-    { name = "Meowosaurus", email = "info@bjsonnen.de" },
-]
+license = { file = "LICENSE" }
 requires-python = ">=3.8"
+authors = [{ name = "Meowosaurus", email = "info@bjsonnen.de" }]
 classifiers = [
     "Environment :: Web Environment",
     "Framework :: Django",
     "Framework :: Django :: 4.0",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Framework :: Django :: 4.2",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -33,20 +25,30 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
-dynamic = [
-    "version",
-]
 dependencies = [
-    "allianceauth>=4.0.0",
+    "allianceauth>=4.0",
 ]
+
 [project.urls]
-Changelog = "https://github.com/ppfeufer/aa-srppayouts-plugin/blob/master/CHANGELOG.md"
-"Issue / Bug Reports" = "https://github.com/ppfeufer/aa-srppayouts-plugin/issues"
+Homepage = "https://gitlab.com/Meowosaurus/aa-srppayouts"
+Source = "https://gitlab.com/Meowosaurus/aa-srppayouts"
+Changelog = "https://gitlab.com/Meowosaurus/aa-srppayouts/-/blob/master/CHANGELOG.md"
+Tracker = "https://gitlab.com/Meowosaurus/aa-srppayouts/-/issues"
 
-[tool.hatch.version]
-path = "srppayouts/__init__.py"
+[tool.flit.module]
+name = "srppayouts"
 
-[tool.hatch.build]
-include = [
-    "/srppayouts",
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+sections = [
+    "FUTURE",
+    "STDLIB",
+    "THIRDPARTY",
+    "DJANGO",
+    "ALLIANCEAUTH",
+    "FIRSTPARTY",
+    "LOCALFOLDER",
 ]
+known_allianceauth = ["allianceauth", "app_utils"]
+known_django = ["django", "django_webtest", "esi", "eveuniverse"]
