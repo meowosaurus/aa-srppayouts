@@ -5,8 +5,8 @@ requires = [
 ]
 
 [project]
-name = "aa-srppayouts-plugin"
-description = "srppayouts Plugin for Alliance Auth (GitHub Version)"
+name = "aa-srppayouts"
+description = "SRP-Payouts Plugin for Alliance Auth (GitHub Version)"
 readme = "README.md"
 keywords = [
     "allianceauth",
@@ -14,7 +14,7 @@ keywords = [
 ]
 license = {file = "LICENSE"}
 authors = [
-    { name = "Peter Pfeufer", email = "develop@ppfeufer.de" },
+    { name = "Meowosaurus", email = "info@bjsonnen.de" },
 ]
 requires-python = ">=3.8"
 classifiers = [
@@ -37,7 +37,7 @@ dynamic = [
     "version",
 ]
 dependencies = [
-    "allianceauth>=3.6.1",
+    "allianceauth>=4.0.0",
 ]
 [project.urls]
 Changelog = "https://github.com/ppfeufer/aa-srppayouts-plugin/blob/master/CHANGELOG.md"
