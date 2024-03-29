@@ -88,7 +88,7 @@ Make sure you have installed alliance auth in the correct way: https://alliancea
 8.) Restart auth with `python manage.py runserver`
 
 ## Usage
-Check out our wiki on GitHub: https://github.com/meowosaurus/aa-srppayouts/wiki
+Check out our quick [YouTube introduction video](https://youtu.be/Rdr7DbPg5uA)
 
 ## Permissions
 Perm | Admin Site | Auth Site 
