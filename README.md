@@ -94,6 +94,7 @@ Check out our quick [YouTube introduction video](https://youtu.be/Rdr7DbPg5uA)
 Perm | Admin Site | Auth Site 
  --- | --- | --- 
 basic_access | None | Can view the payouts page
+admin_access | None | Can force to recalculate the srp table
 
 ## Commands
 - Load over 200 ships with their correct ship id: `python manage.py srppayouts_load_data`
