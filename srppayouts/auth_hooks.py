@@ -20,7 +20,7 @@ class srppayoutsMenuItem(MenuItemHook):
             self,
             _("SRP Payouts"),
             "fas fa-hand-holding-usd fa-fw",
-            "srppayouts:index",
+            "srppayouts:view_payouts",
             navactive=["srppayouts:"],
         )
 

@@ -8,14 +8,27 @@ from django.shortcuts import render, redirect
 
 from .models import *
 
+def generate_context(request: WSGIRequest): 
+    if request.user.has_perm('srppayouts.admin_access'):
+        is_admin = True
+    else:
+        is_admin = False
+
+    context = {"is_admin": is_admin}
+
+    return context
+
+
 @login_required
 @permission_required("srppayouts.basic_access")
-def index(request: WSGIRequest) -> HttpResponse:
+def view_payouts(request: WSGIRequest) -> HttpResponse:
     """
     Index view
     :param request:
     :return:
     """
+
+    context = generate_context(request)
 
     if request.user.has_perm('srppayouts.admin_access'):
         is_admin = True
@@ -31,12 +44,25 @@ def index(request: WSGIRequest) -> HttpResponse:
     columns = Reimbursement.objects.all().order_by("index")
     column_width = 100 / (columns.count() + 1)
 
-    context = {"columns": columns,
-               "column_width": column_width,
-               "matrix": matrix,
-               "is_admin": is_admin}
+    context.update({"columns": columns,
+                    "column_width": column_width,
+                    "matrix": matrix})
 
-    return render(request, "srppayouts/index.html", context)
+    return render(request, "srppayouts/view_payouts.html", context)
+
+def my_requests(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    return render(request, "srppayouts/my_requests.html", context)
+
+def submit_request(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    return render(request, "srppayouts/submit_request.html", context)
+
+### ADMIN
 
 @login_required
 @permission_required("srppayouts.admin_access")
@@ -46,4 +72,4 @@ def force_recalc(request: WSGIRequest) -> HttpResponse:
 
     recalculate_matrix()
 
-    return redirect('srppayouts:index')
+    return redirect('srppayouts:view_payouts')

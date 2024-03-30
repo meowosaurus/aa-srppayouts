@@ -43,16 +43,18 @@
         {% for row_data in matrix %}
         <tr>
             <td>
-                <img src="https://image.eveonline.com/types/{{ row_data.0.ship_id }}/icon?size=32">
+                {% if row_data.0.ship_id is not 0 %}
+                    <img src="https://image.eveonline.com/types/{{ row_data.0.ship_id }}/icon?size=32">
+                {% else %}
+                    <img src="https://images.evetech.net/corporations/500021/logo?size=32">
+                {% endif %}
             </td>
-            <td>
-              {% if row_data.0.ship_id is not 0 %}
-              
-              {% endif %}
-              <b>{{ row_data.0.name }}</b>
+            <td class="align-middle">
+                
+                <b>{{ row_data.0.name }}</b>
             </td>
             {% for cell in row_data|slice:"1:" %}
-            <td>
+            <td class="align-middle">
               {% if cell %}
               {{ cell.value|intcomma }} ISK
               {% else %}

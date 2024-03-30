@@ -9,7 +9,9 @@ from srppayouts import views
 app_name: str = "srppayouts"
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("view-payouts/", views.view_payouts, name="view_payouts"),
+    path("my-requests/", views.my_requests, name="my_requests"),
+    path("submit-request/", views.submit_request, name="submit_request"),
 
     path("force_recalc/", views.force_recalc, name="force_recalc"),
 ]
