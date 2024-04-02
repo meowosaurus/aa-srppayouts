@@ -1,5 +1,9 @@
 """App Views"""
 
+import re
+import requests
+import json
+
 # Django
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.handlers.wsgi import WSGIRequest
@@ -54,13 +58,190 @@ def my_requests(request: WSGIRequest) -> HttpResponse:
 
     context = generate_context(request)
 
+    submit()
+
     return render(request, "srppayouts/my_requests.html", context)
+
+def submit():
+    url = 'https://esi.evetech.net/latest/killmails/111406094/a1c152807e0b427635c0f1f39aa1fb746e25cef3/'
+    broadcast = "@everyone MAX DREADS ON MEOWSER"
+
+    killmail_id, killmail_hash = link_get_esi(url)
+
+    esi_get_request_data(killmail_id, killmail_hash)
+
+def link_get_esi(url: str):
+    killmail_id = ""
+    killmail_hash = ""
+
+    pattern_zkill = r'https://zkillboard.com/kill/(\d+)/'
+    pattern_evetools = r'https://kb.evetools.org/kill/(\d+)'
+    pattern_esi = r'https://esi.evetech.net/latest/killmails/(\d+)/([a-f0-9]+)/'
+
+    match_zkill = re.match(pattern_zkill, url)
+    match_evetools = re.match(pattern_evetools, url)
+    match_esi = re.match(pattern_esi, url)
+
+    if match_zkill:
+        killmail_id = match_zkill.groups()[0]
+
+        killmail_hash = zkill_pull_data(killmail_id)
+    elif match_evetools:
+        killmail_id = match_evetools.groups()[0]
+
+        killmail_hash = zkill_pull_data(killmail_id)
+    elif match_esi:
+        killmail_id, killmail_hash = match_esi.groups() 
+
+        return killmail_id, killmail_hash
+    else:
+        print("error")
+
+    return killmail_id, killmail_hash
+
+def esi_get_request_data(killmail_id: str, killmail_hash: str):
+    url = "https://esi.evetech.net/latest/killmails/" + killmail_id + "/" + killmail_hash + "/"
+
+    headers = {
+        'Content-Encoding': 'gzip',
+    }
+
+    request = requests.get(url)
+    if request.status_code == 200:
+        data = request.json()
+
+        killmail_id = data['killmail_id']
+        killmail_time = data['killmail_time']
+        solar_system_id = data['solar_system_id']
+
+        character_id = data['victim']['character_id']
+        character_name = esi_get_character_name(str(character_id))
+        corporation_id = data['victim']['corporation_id']
+        corporation_name = esi_get_corporation_name(str(corporation_id))
+        alliance_id = data['victim']['alliance_id']
+        alliance_name = esi_get_alliance_name(str(alliance_id))
+        ship_type_id = data['victim']['ship_type_id']
+
+        print(f"killmail_id: {killmail_id}")
+        print(f"killmail_time: {killmail_time}")
+        print(f"solar_system_id: {solar_system_id}")
+        print(f"victim_alliance_id: {alliance_name}")
+        print(f"victim_corporation_id: {corporation_name}")
+        print(f"victim_ship_type_id: {ship_type_id}")
+    else:
+        print("error")
+
+def esi_get_character_name(character_id: str) -> str:
+    url = "https://esi.evetech.net/latest/characters/" + character_id + "/?datasource=tranquility"
+
+    headers = {
+        'Content-Encoding': 'gzip',
+    }
+
+    request = requests.get(url)
+    if request.status_code == 200:
+        data = request.json()
+
+        return data['name']
+    else:
+        print("Error esi get character name")
+
+        return ""
+
+def esi_get_corporation_name(corporation_id: str) -> str:
+    url = "https://esi.evetech.net/latest/corporations/" + corporation_id + "/?datasource=tranquility"
+
+    headers = {
+        'Content-Encoding': 'gzip',
+    }
+
+    request = requests.get(url)
+    if request.status_code == 200:
+        data = request.json()
+
+        return data['name']
+    else:
+        print("Error esi get corporation name")
+
+        return ""
+
+def esi_get_alliance_name(alliance_id: str) -> str:
+    url = "https://esi.evetech.net/latest/alliances/" + alliance_id + "/?datasource=tranquility"
+
+    headers = {
+        'Content-Encoding': 'gzip',
+    }
+
+    request = requests.get(url)
+    if request.status_code == 200:
+        data = request.json()
+
+        return data['name']
+    else:
+        print("Error esi get corporation name")
+
+        return ""
+
+def zkill_pull_data(killmail_id: str):
+    killmail_hash = ""
+
+    zkill_api = "https://zkillboard.com/api/killID/" + killmail_id + "/"
+
+    # According to zKillboard API rules
+    headers = {
+        'Content-Encoding': 'gzip',
+        #TODO
+        'User-Agent': 'Alliance Auth: aa-srppayouts plugin Email: info@bjsonnen.de (Under development)',
+    }
+
+    res = requests.get(zkill_api)
+    if res.status_code == 200:
+        data = res.json()
+
+        killmail_data = data[0]
+        killmail_hash = killmail_data['zkb']['hash']
+    else:
+        print("Error, unable to pull data from zKillboard.com API: " + response)
+
+    return killmail_hash
 
 def submit_request(request: WSGIRequest) -> HttpResponse:
 
     context = generate_context(request)
 
+    
+
     return render(request, "srppayouts/submit_request.html", context)
+
+def check_url_zkill(url: str) -> bool:
+    pattern = r'https://zkillboard.com/kill/(\d+)/'
+
+    match = re.match(pattern, url)
+
+    if match:
+        return True
+    else:
+        return False
+
+def check_url_esi(url: str) -> bool:
+    pattern = r'https://esi.evetech.net/latest/killmails/(\d+)/([a-f0-9]+)/'
+
+    match = re.match(pattern, url)
+
+    if match:
+        return True
+    else:
+        return False
+
+def check_url_evetools(url: str) -> bool:
+    pattern = r'https://kb.evetools.org/kill/(\d+)'
+
+    match = re.match(pattern, url)
+
+    if match: 
+        return True
+    else: 
+        return False
 
 ### ADMIN
 

@@ -8,6 +8,33 @@
 
 {% block content %}
     {% block details %}{% endblock %}
+
+    <!-- Modal for sending SRP requests -->
+    <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Killmail</span>
+                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                </div>                  
+                <div class="input-group">
+                    <span class="input-group-text">Fleet Ping</span>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+    </div>
+      
 {% endblock %}
 
 {% block header_nav_collapse_left %}
@@ -22,7 +49,7 @@
     </a>
 </li>
 <li class="nav-item">
-    <a class="nav-link {% navactive request 'srppayouts:submit_request' %}" href="{% url 'srppayouts:submit_request' %}">
+    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#submitModal">
         Submit Request
     </a>
 </li>
@@ -34,6 +61,44 @@
     <a class="nav-link" href="{% url 'srppayouts:force_recalc' %}">
         Force Recalculation
     </a>
+</li>
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Dropdown
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item" href="#">
+                Create SRP Link
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="#">
+                View SRP Links
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item" href="#">
+                Open Requests
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="#">
+                Closed Requests
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li>
+            <a class="dropdown-item" href="#">
+                Force Recalculation
+            </a>
+        </li>
+    </ul>
 </li>
 {% endif %}
 {% endblock %}

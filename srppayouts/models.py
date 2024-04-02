@@ -28,6 +28,8 @@ class General(models.Model):
         permissions = (("basic_access", "Can access this app"),
                        ("admin_access", "Can force to recalculate the table"),)
 
+### VIEW PAYOUTS
+
 class Ship(models.Model):
     name = models.CharField(max_length=255, blank=True, unique=True)
     ship_id = models.IntegerField(default=0, unique=True)
@@ -49,6 +51,34 @@ class Payout(models.Model):
 
     def __str__(self):
         return "(" + self.reimbursement.name + ") " + self.ship.name + ": " + format(self.value, ",") + " ISK"
+
+### REQUESTS
+class Response(models.Model):
+    character_id = models.IntegerField(default=0, unique=False)
+    character_name = models.CharField(max_length=255, blank=True, unique=False)
+    corporation_id = models.IntegerField(default=0, unique=False)
+    corporation_name = models.CharField(max_length=255, blank=True, unique=False)
+    alliance_id = models.IntegerField(default=0, unique=False)
+    alliance_name = models.CharField(max_length=255, blank=True, unique=False)
+    status = models.IntegerField(default=0, unique=False)
+    amount = models.IntegerField(default=0, unique=False)
+    comment = models.CharField(max_length=255, blank=True, unique=False)
+
+class Request(models.Model):
+    ship_id = models.IntegerField(default=0, unique=False)
+    ship_name = models.CharField(max_length=255, blank=True, unique=False)
+    character_id = models.IntegerField(default=0, unique=False)
+    character_name = models.CharField(max_length=255, blank=True, unique=False)
+    corporation_id = models.IntegerField(default=0, unique=False)
+    corporation_name = models.CharField(max_length=255, blank=True, unique=False)
+    alliance_id = models.IntegerField(default=0, unique=False)
+    alliance_name = models.CharField(max_length=255, blank=True, unique=False)
+    killmail_id = models.IntegerField(default=0, unique=False)
+    killmail_time = models.CharField(max_length=255, blank=True, unique=False)
+    killmail_solar_id = models.IntegerField(default=0, unique=False)
+    esi_link = models.CharField(max_length=255, blank=True, unique=False)
+    ping = models.CharField(max_length=1023, blank=True, unique=False)
+    response = models.ForeignKey(Response, on_delete=models.CASCADE, related_name="response", null=True)
 
 def recalculate_matrix():
     ship_rows = Ship.objects.all().order_by("name")
