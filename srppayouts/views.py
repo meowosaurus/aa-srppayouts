@@ -10,6 +10,8 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from eveuniverse.models.universe_2 import EveSolarSystem
+
 from .models import *
 
 def generate_context(request: WSGIRequest): 
@@ -68,7 +70,7 @@ def submit():
 
     killmail_id, killmail_hash = link_get_esi(url)
 
-    esi_get_request_data(killmail_id, killmail_hash)
+    esi_get_request_data(killmail_id, killmail_hash, broadcast)
 
 def link_get_esi(url: str):
     killmail_id = ""
@@ -99,7 +101,7 @@ def link_get_esi(url: str):
 
     return killmail_id, killmail_hash
 
-def esi_get_request_data(killmail_id: str, killmail_hash: str):
+def esi_get_request_data(killmail_id: str, killmail_hash: str, ping: str):
     url = "https://esi.evetech.net/latest/killmails/" + killmail_id + "/" + killmail_hash + "/"
 
     headers = {
@@ -110,7 +112,8 @@ def esi_get_request_data(killmail_id: str, killmail_hash: str):
     if request.status_code == 200:
         data = request.json()
 
-        killmail_id = data['killmail_id']
+        new_request = Request()
+
         killmail_time = data['killmail_time']
         solar_system_id = data['solar_system_id']
 
@@ -121,13 +124,24 @@ def esi_get_request_data(killmail_id: str, killmail_hash: str):
         alliance_id = data['victim']['alliance_id']
         alliance_name = esi_get_alliance_name(str(alliance_id))
         ship_type_id = data['victim']['ship_type_id']
+        test = EveSolarSystem.objects.get(id=ship_type_id)
+        print(test)
 
-        print(f"killmail_id: {killmail_id}")
-        print(f"killmail_time: {killmail_time}")
-        print(f"solar_system_id: {solar_system_id}")
-        print(f"victim_alliance_id: {alliance_name}")
-        print(f"victim_corporation_id: {corporation_name}")
-        print(f"victim_ship_type_id: {ship_type_id}")
+        new_request.killmail_id = killmail_id
+        new_request.killmail_hash = killmail_hash
+        new_request.killmail_time = killmail_time
+        new_request.killmail_solar_id = solar_system_id
+        new_request.character_id = character_id
+        new_request.character_name = character_name
+        new_request.corporation_id = corporation_id
+        new_request.corporation_name = corporation_name
+        new_request.alliance_id = alliance_id
+        new_request.alliance_name = alliance_name
+        new_request.ship_id = ship_type_id
+        new_request.esi_link = url
+        new_request.ping = ping
+
+        new_request.save()
     else:
         print("error")
 

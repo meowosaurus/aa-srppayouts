@@ -73,12 +73,19 @@ class Request(models.Model):
     corporation_name = models.CharField(max_length=255, blank=True, unique=False)
     alliance_id = models.IntegerField(default=0, unique=False)
     alliance_name = models.CharField(max_length=255, blank=True, unique=False)
-    killmail_id = models.IntegerField(default=0, unique=False)
-    killmail_time = models.CharField(max_length=255, blank=True, unique=False)
+    killmail_id = models.IntegerField(default=0, unique=True)
+    killmail_hash = models.CharField(max_length=255, blank=True, unique=False)
+    killmail_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     killmail_solar_id = models.IntegerField(default=0, unique=False)
+    killmail_solar_name = models.CharField(max_length=255, blank=True, unique=False)
+    killmail_region_id = models.IntegerField(default=0, unique=False)
+    killmail_region_name = models.CharField(max_length=255, blank=True, unique=False)
     esi_link = models.CharField(max_length=255, blank=True, unique=False)
     ping = models.CharField(max_length=1023, blank=True, unique=False)
     response = models.ForeignKey(Response, on_delete=models.CASCADE, related_name="response", null=True)
+
+    def __str__(self):
+        return self.character_name + ": " + str(self.killmail_id)
 
 def recalculate_matrix():
     ship_rows = Ship.objects.all().order_by("name")

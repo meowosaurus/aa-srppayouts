@@ -19,3 +19,5 @@ class ReimbursementAdmin(admin.ModelAdmin):
 admin.site.register(Ship, ShipAdmin)
 admin.site.register(Reimbursement, ReimbursementAdmin)
 admin.site.register(Payout, PayoutAdmin)
+admin.site.register(Request)
+admin.site.register(Response)
