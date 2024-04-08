@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
+from eveuniverse.models.entities import EveEntity
 from eveuniverse.models.universe_2 import EveSolarSystem
 
 from .models import *
@@ -56,13 +58,36 @@ def view_payouts(request: WSGIRequest) -> HttpResponse:
 
     return render(request, "srppayouts/view_payouts.html", context)
 
+@login_required
+@permission_required("srppayouts.basic_access")
 def my_requests(request: WSGIRequest) -> HttpResponse:
 
     context = generate_context(request)
 
-    submit()
+    srp_requests = Request.objects.filter(requester_id=request.user.profile.main_character.character_id).order_by('-submitted_on')
+    
+    context.update({"srp_requests": srp_requests})
 
     return render(request, "srppayouts/my_requests.html", context)
+
+@csrf_exempt
+@login_required
+@permission_required("srppayouts.basic_access")
+def submit_request(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    if request.method == 'POST':
+        killmail = request.POST['killmail']
+        ping = request.POST['ping']
+
+        killmail_id, killmail_hash = link_get_esi(killmail)
+
+        esi_get_request_data(request, killmail_id, killmail_hash, ping)
+
+    return redirect('srppayouts:my_requests')
+
+###############################################################
 
 def submit():
     url = 'https://esi.evetech.net/latest/killmails/111406094/a1c152807e0b427635c0f1f39aa1fb746e25cef3/'
@@ -101,14 +126,14 @@ def link_get_esi(url: str):
 
     return killmail_id, killmail_hash
 
-def esi_get_request_data(killmail_id: str, killmail_hash: str, ping: str):
+def esi_get_request_data(req: WSGIRequest, killmail_id: str, killmail_hash: str, ping: str):
     url = "https://esi.evetech.net/latest/killmails/" + killmail_id + "/" + killmail_hash + "/"
 
     headers = {
         'Content-Encoding': 'gzip',
     }
 
-    request = requests.get(url)
+    request = requests.get(url, headers=headers)
     if request.status_code == 200:
         data = request.json()
 
@@ -116,7 +141,7 @@ def esi_get_request_data(killmail_id: str, killmail_hash: str, ping: str):
 
         killmail_time = data['killmail_time']
         solar_system_id = data['solar_system_id']
-
+        solar_system_name = EveEntity.objects.resolve_name(solar_system_id)
         character_id = data['victim']['character_id']
         character_name = esi_get_character_name(str(character_id))
         corporation_id = data['victim']['corporation_id']
@@ -124,13 +149,13 @@ def esi_get_request_data(killmail_id: str, killmail_hash: str, ping: str):
         alliance_id = data['victim']['alliance_id']
         alliance_name = esi_get_alliance_name(str(alliance_id))
         ship_type_id = data['victim']['ship_type_id']
-        test = EveSolarSystem.objects.get(id=ship_type_id)
-        print(test)
+        ship_type_name = EveEntity.objects.resolve_name(ship_type_id)
 
         new_request.killmail_id = killmail_id
         new_request.killmail_hash = killmail_hash
         new_request.killmail_time = killmail_time
         new_request.killmail_solar_id = solar_system_id
+        new_request.killmail_solar_name = solar_system_name
         new_request.character_id = character_id
         new_request.character_name = character_name
         new_request.corporation_id = corporation_id
@@ -138,7 +163,10 @@ def esi_get_request_data(killmail_id: str, killmail_hash: str, ping: str):
         new_request.alliance_id = alliance_id
         new_request.alliance_name = alliance_name
         new_request.ship_id = ship_type_id
+        new_request.ship_name = ship_type_name
         new_request.esi_link = url
+        new_request.requester_id = req.user.profile.main_character.character_id
+        new_request.requester_name = req.user.profile.main_character.character_name
         new_request.ping = ping
 
         new_request.save()
@@ -152,7 +180,7 @@ def esi_get_character_name(character_id: str) -> str:
         'Content-Encoding': 'gzip',
     }
 
-    request = requests.get(url)
+    request = requests.get(url, headers=headers)
     if request.status_code == 200:
         data = request.json()
 
@@ -169,7 +197,7 @@ def esi_get_corporation_name(corporation_id: str) -> str:
         'Content-Encoding': 'gzip',
     }
 
-    request = requests.get(url)
+    request = requests.get(url, headers=headers)
     if request.status_code == 200:
         data = request.json()
 
@@ -186,7 +214,7 @@ def esi_get_alliance_name(alliance_id: str) -> str:
         'Content-Encoding': 'gzip',
     }
 
-    request = requests.get(url)
+    request = requests.get(url, headers=headers)
     if request.status_code == 200:
         data = request.json()
 
@@ -208,7 +236,7 @@ def zkill_pull_data(killmail_id: str):
         'User-Agent': 'Alliance Auth: aa-srppayouts plugin Email: info@bjsonnen.de (Under development)',
     }
 
-    res = requests.get(zkill_api)
+    res = requests.get(zkill_api, headers=headers)
     if res.status_code == 200:
         data = res.json()
 
@@ -218,14 +246,6 @@ def zkill_pull_data(killmail_id: str):
         print("Error, unable to pull data from zKillboard.com API: " + response)
 
     return killmail_hash
-
-def submit_request(request: WSGIRequest) -> HttpResponse:
-
-    context = generate_context(request)
-
-    
-
-    return render(request, "srppayouts/submit_request.html", context)
 
 def check_url_zkill(url: str) -> bool:
     pattern = r'https://zkillboard.com/kill/(\d+)/'

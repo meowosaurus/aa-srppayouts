@@ -1,0 +1,327 @@
+{% load i18n %}
+{% load humanize %}
+
+{% if request.response.status == 1 %}
+    <div class="card border-success">
+    {% else %}
+    <div class="card border-danger">
+{% endif %}
+        <h5 class="card-header">
+            <a class="text-decoration-none text-body" target="_blank" href="https://zkillboard.com/kill/{{ request.killmail_id }}/">
+                <img src="https://image.eveonline.com/types/{{ request.ship_id }}/icon?size=32" width="32px" height="32px">
+                <p class="align-middle" style="display: inline;">
+                    {{ request.ship_name }} lost in {{ request.killmail_solar_name }}
+                </p>
+            </a>
+        </h5>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-3">
+                            Character:
+                        </div>
+                        <div class="col-9">
+                            <a class="text-decoration-none text-body" target="_blank" href="https://zkillboard.com/character/{{ request.character_id }}/">
+                                <div class="float-end align-middle">
+                                    {{ request.character_name }}
+                                    <img style="margin-left: 0.3rem;" src="https://images.evetech.net/characters/{{ request.character_id }}/portrait?size=32" width="30px" height="30px">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-3">
+                            Requester:
+                        </div>
+                        <div class="col-9">
+                            <a class="text-decoration-none text-body" target="_blank" href="https://zkillboard.com/character/{{ request.requester_id }}/">
+                                <div class="float-end align-middle">
+                                    {{ request.requester_name }}
+                                    <img style="margin-left: 0.3rem;" src="https://images.evetech.net/characters/{{ request.requester_id }}/portrait?size=32" width="30px" height="30px">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-3">
+                            Reviewer:
+                        </div>
+                        <div class="col-9">
+                            <a class="text-decoration-none text-body" target="_blank" href="https://zkillboard.com/character/{{ request.response.character_id }}/">
+                                <div class="float-end">
+                                    {{ request.response.character_name }}
+                                    <img style="margin-left: 0.3rem;" src="https://images.evetech.net/characters/{{ request.response.character_id }}/portrait?size=128" width="30px" height="30px">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-3">
+                            Status:
+                        </div>
+                        <div class="col-9">
+                            <div class="float-end align-middle">
+                                {% if request.response.status == 1 %}
+                                PAID
+                                <i style="margin-left: 0.3rem;" class="fa-solid fa-check"></i>
+                                {% else %}
+                                REJECTED
+                                <i style="margin-left: 0.3rem;" class="fa-solid fa-xmark"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>        
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    <a data-bs-toggle="modal" data-bs-target="#deleteModal{{ request.killmail_id }}" class="btn btn-secondary">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div>
+                <div class="col">
+                    <a data-bs-toggle="modal" data-bs-target="#detailsModal{{ request.killmail_id }}" class="btn btn-primary float-end">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal{{ request.killmail_id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">
+                Are you sure to delete this request?
+            </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                After deleting it, you can still request a reimbursement for this killmail. <br /> <br />
+                Once the request has been processed, you won't be able to delete it.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary float-begin" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    <!-- Details Modal -->
+    <div class="modal fade" id="detailsModal{{ request.killmail_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    Reimbursement Request Details #{{ request.killmail_id }}
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                <td style="width: 25%;">
+                                    Ship:
+                                </td>
+                                <td class="text-end" style="width: 25%;">
+                                    <a target="_blank" class="text-decoration-none" href="https://zkillboard.com/kill/{{ request.killmail_id }}/">
+                                        {{ request.ship_name }}
+                                        <img style="margin-left: 0.3rem;" src="https://image.eveonline.com/types/{{ request.ship_id }}/icon?size=32">
+                                    </a>
+                                </td>
+                                <td>
+                                    Submitted On:
+                                </td>
+                                <td class="text-end">
+                                    {{ request.submitted_on }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Character
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://zkillboard.com/character/{{ request.character_id }}/">
+                                        {{ request.character_name }}
+                                        <img style="margin-left: 0.3rem;" src="https://images.evetech.net/characters/{{ request.character_id }}/portrait?size=32">
+                                    </a>
+                                </td>
+                                <td>
+                                    Killmail Time:
+                                </td>
+                                <td class="text-end">
+                                    {{ request.killmail_time }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Corporation:
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://zkillboard.com/corporation/{{ request.corporation_id }}/">
+                                        {{ request.corporation_name }}
+                                        <img style="margin-left: 0.3rem;" src="https://images.evetech.net/corporations/{{ request.corporation_id }}/logo?size=32">
+                                    </a>
+                                </td>
+                                <td>
+                                    System
+                                </td>
+                                <td class="text-end" style="width: 25%;">
+                                    <a target="_blank" class="text-decoration-none" href="https://evemaps.dotlan.net/system/{{ request.killmail_solar_name }}">
+                                        {{ request.killmail_solar_name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Alliance:
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://zkillboard.com/alliance/{{ request.alliance_id }}/">
+                                        {{ request.alliance_name }}
+                                        <img style="margin-left: 0.3rem;" src="https://images.evetech.net/alliances/{{ request.alliance_id }}/logo?size=32">
+                                    </a>
+                                </td>
+                                <td>
+                                    Region
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://evemaps.dotlan.net/system/1DQ1-A">
+                                        Delve
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Requester
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://zkillboard.com/character/{{ request.requester_id }}/">
+                                        {{ request.requester_name }}
+                                        <img style="margin-left: 0.3rem;" src="https://images.evetech.net/characters/{{ request.requester_id }}/portrait?size=32">
+                                    </a>
+                                </td>
+                                <td>
+                                    zKillboard
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://zkillboard.com/kill/{{ request.killmail_id }}/">
+                                        {{ request.killmail_id }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Reimburser
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://zkillboard.com/character/{{ request.response.character_id }}/">
+                                        {{ request.response.character_name }}
+                                        <img style="margin-left: 0.3rem;" src="https://images.evetech.net/characters/{{ request.response.character_id }}/portrait?size=32">
+                                    </a>
+                                </td>
+                                <td>
+                                    ESI
+                                </td>
+                                <td class="text-end">
+                                    <a target="_blank" class="text-decoration-none" href="https://esi.evetech.net/latest/killmails/{{ request.killmail_id }}/{{ request.killmail_hash }}/">
+                                        {{ request.killmail_id }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Status:
+                                </td>
+                                <td class="text-end">
+                                    <span class="badge text-bg-secondary">
+                                        <i class="fa-solid fa-comment"></i>
+                                    </span>
+                                    {% if request.response.status == 1 %}
+                                    PAID
+                                    <i style="margin-left: 0.3rem;" class="fa-solid fa-check"></i>
+                                    {% else %}
+                                    REJECTED
+                                    <i style="margin-left: 0.3rem;" class="fa-solid fa-xmark"></i>
+                                    {% endif %}
+                                    
+                                </td>
+                                <td>
+                                    Amount:
+                                </td>
+                                <td class="text-end">
+                                    {% if request.response.status == 1 %}
+                                        {{ request.response.amount|intcomma }} ISK
+                                    {% else %}
+                                        0 ISK
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% if False %}
+                <div class="row">
+                    <div class="accordion">
+                        <div class="accordion-item">
+                          <div class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <h4>
+                                    Fleet Ping:
+                                </h4>
+                                <hr>
+                                {{ request.ping }}
+                            </div>
+                          </div>
+                        </div>
+                        {% if request.response.comment %}
+                        <div class="accordion-item">
+                          <div class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
+                            <div class="accordion-body">
+                                <h4>
+                                    {{ request.response.character_name }} comment:
+                                </h4>
+                                <hr>
+                                {{ request.response.comment }}
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="card">
+                        <h5 class="card-header">Ping</h5>
+                        <div class="card-body">
+                            {{ request.ping }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

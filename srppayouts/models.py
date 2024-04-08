@@ -64,6 +64,9 @@ class Response(models.Model):
     amount = models.IntegerField(default=0, unique=False)
     comment = models.CharField(max_length=255, blank=True, unique=False)
 
+    def __str__(self):
+        return self.character_name + ": " + str(self.amount)
+
 class Request(models.Model):
     ship_id = models.IntegerField(default=0, unique=False)
     ship_name = models.CharField(max_length=255, blank=True, unique=False)
@@ -73,6 +76,7 @@ class Request(models.Model):
     corporation_name = models.CharField(max_length=255, blank=True, unique=False)
     alliance_id = models.IntegerField(default=0, unique=False)
     alliance_name = models.CharField(max_length=255, blank=True, unique=False)
+    # UNIQUE KILLMAIL ID
     killmail_id = models.IntegerField(default=0, unique=True)
     killmail_hash = models.CharField(max_length=255, blank=True, unique=False)
     killmail_time = models.DateTimeField(auto_now=False, auto_now_add=False)
@@ -82,6 +86,9 @@ class Request(models.Model):
     killmail_region_name = models.CharField(max_length=255, blank=True, unique=False)
     esi_link = models.CharField(max_length=255, blank=True, unique=False)
     ping = models.CharField(max_length=1023, blank=True, unique=False)
+    requester_id = models.IntegerField(default=0, unique=False)
+    requester_name = models.CharField(max_length=255, blank=True, unique=False)
+    submitted_on = models.DateTimeField(auto_now_add=True, null=True)
     response = models.ForeignKey(Response, on_delete=models.CASCADE, related_name="response", null=True)
 
     def __str__(self):

@@ -19,15 +19,15 @@
 </div>
 
 <div class="row row-cols-3 gy-4">
+    {% for request in srp_requests %}
     <div class="col">
-        {% include 'srppayouts/my_requests/_request.html' %}
+        {% if request.response %}
+            {% include 'srppayouts/my_requests/_request_completed.html' %}
+        {% else %}
+            {% include 'srppayouts/my_requests/_request_open.html' %}
+        {% endif %}
     </div>
-    <div class="col">
-        {% include 'srppayouts/my_requests/_request.html' %}
-    </div>
-    <div class="col">
-        {% include 'srppayouts/my_requests/_request.html' %}
-    </div>
+    {% endfor %}
 </div>
 {% endblock %}
 
