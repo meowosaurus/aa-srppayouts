@@ -30,10 +30,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://gitlab.com/Meowosaurus/aa-srppayouts"
-Source = "https://gitlab.com/Meowosaurus/aa-srppayouts"
-Changelog = "https://gitlab.com/Meowosaurus/aa-srppayouts/-/blob/master/CHANGELOG.md"
-Tracker = "https://gitlab.com/Meowosaurus/aa-srppayouts/-/issues"
+Homepage = "https://github.com/Meowosaurus/aa-srppayouts"
+Source = "https://github.com/Meowosaurus/aa-srppayouts"
+Changelog = "https://github.com/Meowosaurus/aa-srppayouts/-/blob/master/CHANGELOG.md"
+Tracker = "https://github.com/Meowosaurus/aa-srppayouts/-/issues"
 
 [tool.flit.module]
 name = "srppayouts"

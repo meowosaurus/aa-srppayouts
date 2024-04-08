@@ -10,6 +10,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 from eveuniverse.models.entities import EveEntity
 from eveuniverse.models.universe_2 import EveSolarSystem
@@ -70,7 +71,6 @@ def my_requests(request: WSGIRequest) -> HttpResponse:
 
     return render(request, "srppayouts/my_requests.html", context)
 
-@csrf_exempt
 @login_required
 @permission_required("srppayouts.basic_access")
 def submit_request(request: WSGIRequest) -> HttpResponse:
@@ -84,6 +84,29 @@ def submit_request(request: WSGIRequest) -> HttpResponse:
         killmail_id, killmail_hash = link_get_esi(killmail)
 
         esi_get_request_data(request, killmail_id, killmail_hash, ping)
+
+        messages.success(request, "Successfully added reimbursement request!")
+
+    return redirect('srppayouts:my_requests')
+
+@login_required
+@permission_required("srppayouts.basic_access")
+def delete_request(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    if request.method == 'POST':
+        id = request.POST['killmail_id']
+        req = Request.objects.get(killmail_id=id)
+
+        if not req.response:
+            req.delete()
+
+            messages.success(request, "Successfully deleted request #" + str(id) + "!")
+        else:
+            messages.error(request, "Unable to delete request: This request has already been processed!")
+    else:
+        messages.error(request, "Unable to parse data!")
 
     return redirect('srppayouts:my_requests')
 

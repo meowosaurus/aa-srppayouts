@@ -13,5 +13,6 @@ urlpatterns = [
     path("my-requests/", views.my_requests, name="my_requests"),
 
     path("submit-request/", views.submit_request, name="submit_request"),
-    path("force_recalc/", views.force_recalc, name="force_recalc"),
+    path("delete-request/", views.delete_request, name="delete_request"),
+    path("force-recalc/", views.force_recalc, name="force_recalc"),
 ]
