@@ -26,6 +26,8 @@ class General(models.Model):
         managed = False
         default_permissions = ()
         permissions = (("basic_access", "Can access this app"),
+                       ("reimburser_access", "Can access, complete and reject reimburse requests"),
+                       ("manager_access", "Can manage payouts"),
                        ("admin_access", "Can force to recalculate the table"),)
 
 ### VIEW PAYOUTS

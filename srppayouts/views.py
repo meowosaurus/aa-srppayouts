@@ -17,13 +17,14 @@ from eveuniverse.models.universe_2 import EveSolarSystem
 
 from .models import *
 
-def generate_context(request: WSGIRequest): 
-    if request.user.has_perm('srppayouts.admin_access'):
-        is_admin = True
-    else:
-        is_admin = False
+def generate_context(request: WSGIRequest):
+    is_admin = request.user.has_perm('srppayouts.admin_access')
+    is_manager = request.user.has_perm('srppayouts.manager_access')
+    is_reimburser = request.user.has_perm('srppayouts.reimburser_access')
 
-    context = {"is_admin": is_admin}
+    context = {"is_admin": is_admin,
+               "is_manager": is_manager,
+               "is_reimburser": is_reimburser}
 
     return context
 
@@ -71,6 +72,12 @@ def my_requests(request: WSGIRequest) -> HttpResponse:
 
     return render(request, "srppayouts/my_requests.html", context)
 
+def view_statistics(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    return render(request, "srppayouts/view_statistics.html", context)
+
 @login_required
 @permission_required("srppayouts.basic_access")
 def submit_request(request: WSGIRequest) -> HttpResponse:
@@ -109,6 +116,49 @@ def delete_request(request: WSGIRequest) -> HttpResponse:
         messages.error(request, "Unable to parse data!")
 
     return redirect('srppayouts:my_requests')
+
+### REIMBURSER
+
+@login_required
+@permission_required("srppayouts.reimburser_access")
+def reimburse_open_requests(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    return render(request, "srppayouts/reimburse/open_requests.html", context)
+
+@login_required
+@permission_required("srppayouts.reimburser_access")
+def reimburse_closed_requests(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    return render(request, "srppayouts/reimburse/closed_requests.html", context)
+
+### MANAGER
+
+@login_required
+@permission_required("srppayouts.manager_access")
+def manager_change_payouts(request: WSGIRequest) -> HttpResponse:
+
+    context = generate_context(request)
+
+    return render(request, "srppayouts/manager/change_payouts.html", context)
+
+@login_required
+@permission_required("srppayouts.manager_access")
+def force_recalc(request: WSGIRequest) -> HttpResponse:
+
+    print("User " + request.user.profile.main_character.character_name + " forced a recalculation of the srp payouts table!")
+
+    recalculate_matrix()
+
+    if cache.get('matrix'):
+        messages.success(request, "Successfully recalculated payouts matrix!")
+    else:
+        messages.error(request, "Unable to recalculate matrix!")
+
+    return redirect('srppayouts:view_payouts')
 
 ###############################################################
 
@@ -301,13 +351,3 @@ def check_url_evetools(url: str) -> bool:
         return False
 
 ### ADMIN
-
-@login_required
-@permission_required("srppayouts.admin_access")
-def force_recalc(request: WSGIRequest) -> HttpResponse:
-
-    print("User " + request.user.profile.main_character.character_name + " forced a recalculation of the srp payouts table!")
-
-    recalculate_matrix()
-
-    return redirect('srppayouts:view_payouts')

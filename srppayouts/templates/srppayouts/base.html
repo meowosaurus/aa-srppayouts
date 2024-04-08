@@ -26,15 +26,15 @@
                             <input type="text" class="form-control" name="killmail">
                             <label>Killmail:</label>
                             <div class="form-text" style="margin-left: 0.1rem;">
-                                You can use zKillboard.com, kb.evetools.org or ESI killmails
+                                You can use zKillboard.com or kb.evetools.org killmails, as well as ESI killmails links
                             </div>
                         </div> 
                     </div>
                     <div class="form-floating">
                         <textarea class="form-control" name="ping" rows="5" style="height: 100%;"></textarea>
-                        <label>Ping:</label>
+                        <label>Fleet Ping:</label>
                         <div class="form-text" style="margin-left: 0.1rem;">
-                            Copy & paste your FC's ping
+                            Copy & paste your FC's ping. Make sure to copy the entire ping, including your FC's name
                         </div>
                     </div>
                 </div>
@@ -65,10 +65,16 @@
         Submit Request
     </a>
 </li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'srppayouts:view_statistics' %}">
+        Statistics
+    </a>
+</li>
 {% endblock %}
 
 {% block header_nav_collapse_right %}
-{% if is_admin %}
+{% if is_admin or is_manager or is_reimburser %}
+{% if False %}
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       Command
@@ -86,29 +92,39 @@
         </li>
     </ul>
 </li>
+{% endif %}
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       Reimbursement
     </a>
     <ul class="dropdown-menu">
+        {% if is_reimburser %}
         <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="{% url 'srppayouts:reimburse_open_requests' %}">
                 Open Requests
             </a>
         </li>
         <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="{% url 'srppayouts:reimburse_closed_requests' %}">
                 Closed Requests
             </a>
         </li>
+        {% endif %}
+        {% if is_manager %}
         <li>
             <hr class="dropdown-divider">
         </li>
         <li>
-            <a class="dropdown-item" href="{% url 'srppayouts:force_recalc' %}">
+            <a class="dropdown-item" href="{% url 'srppayouts:manager_change_payouts' %}">
+                Change Payouts
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{% url 'srppayouts:admin_force_recalc' %}">
                 Force Recalculation
             </a>
         </li>
+        {% endif %}
     </ul>
 </li>
 {% endif %}

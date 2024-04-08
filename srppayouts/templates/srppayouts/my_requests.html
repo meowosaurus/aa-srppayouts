@@ -22,9 +22,9 @@
     {% for request in srp_requests %}
     <div class="col">
         {% if request.response %}
-            {% include 'srppayouts/my_requests/_request_completed.html' %}
+            {% include 'srppayouts/_partials/my_requests/_request_completed.html' %}
         {% else %}
-            {% include 'srppayouts/my_requests/_request_open.html' %}
+            {% include 'srppayouts/_partials/my_requests/_request_open.html' %}
         {% endif %}
     </div>
     {% endfor %}
