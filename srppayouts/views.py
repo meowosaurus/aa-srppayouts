@@ -229,6 +229,11 @@ def esi_get_request_data(req: WSGIRequest, killmail_id: str, killmail_hash: str,
         new_request.killmail_time = killmail_time
         new_request.killmail_solar_id = solar_system_id
         new_request.killmail_solar_name = solar_system_name
+
+        system, _ = EveSolarSystem.objects.get_or_create_esi(id=solar_system_id)
+        new_request.killmail_region_id = system.eve_constellation.eve_region.id
+        new_request.killmail_region_name = system.eve_constellation.eve_region.name
+
         new_request.character_id = character_id
         new_request.character_name = character_name
         new_request.corporation_id = corporation_id
