@@ -1,0 +1,57 @@
+<div class="modal" tabindex="-1" id="createRequestLinkModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa-solid fa-link" style="margin-right: 0.25rem;"></i>
+                    Create SRP Link
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">
+                        Fleet Name:
+                    </label>
+                    <input type="text" class="form-control" placeholder="[Alliance Tag] Strategic Fleet">
+                    <div class="form-text">
+                        Required: Give your SRP link a name. How did you name your fleet ingame?
+                    </div>                            
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">
+                        Additional information:
+                    </label>
+                    <textarea class="form-control" placeholder="Your ping or broadcast." rows="5"></textarea>
+                    <div class="form-text">
+                        Optional: Insert your ping or broadcast. Make sure to include all information, including when you sent it.
+                    </div>
+                    </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">
+                        Allow external access:
+                    </label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Allow non-registered users to submit reimbursement requests.
+                        </label>
+                    </div>    
+                    <div class="form-text">
+                        Warning: This allows <b>anyone</b> with this link to request reimbursements! This includes characters that are NOT registered with this auth.
+                    </div>                    
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                    Close
+                </button>
+                <button type="button" class="btn btn-success">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

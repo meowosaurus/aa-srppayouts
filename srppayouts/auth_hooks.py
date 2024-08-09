@@ -20,12 +20,15 @@ class srppayoutsMenuItem(MenuItemHook):
             self,
             _("SRP Payouts"),
             "fas fa-hand-holding-usd fa-fw",
-            "srppayouts:index",
+            "srppayouts:view_payouts",
             navactive=["srppayouts:"],
         )
 
     def render(self, request):
         """Render the menu item"""
+
+        if request.user.has_perm("srppayouts.reimburser_access"):
+            self.count = 4
 
         if request.user.has_perm("srppayouts.basic_access"):
             return MenuItemHook.render(self, request)

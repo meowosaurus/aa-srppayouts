@@ -1,0 +1,209 @@
+{% extends 'srppayouts/base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load icons_tags %}
+
+{% block details %}
+<div class="row">
+    <div class="col">
+        {% include 'srppayouts/modules/_requests_card.html' %}
+    </div>
+    <div class="col">
+        {% include 'srppayouts/modules/_requests_card.html' %}
+    </div>
+    <div class="col">
+        {% include 'srppayouts/modules/_requests_card.html' %}
+    </div>
+    <div class="col">
+        {% include 'srppayouts/modules/_requests_card.html' %}
+    </div>
+</div>
+
+<div class="modal modal-lg" id="viewRequestModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <img src="https://image.eveonline.com/types/12015/icon?size=32" class="img-fluid rounded">
+            <div style="display: inline-block; vertical-align:middle;">
+                <b>Muninn</b>
+                lost in 
+                <b>F7C-H0</b>
+            </div>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-sm table-borderless">
+                <tbody>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Killmail:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                119867443
+                            </a>
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            Ship:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                Sabre
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Character:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                Meowlicious
+                            </a>
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            Corporation:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                Monkey Scumbucket Consortium
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Alliance:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                Shadow Ultimatum
+                            </a>
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            System:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                D-PNP9
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Region:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                Esoteria
+                            </a>
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            ISK Lost:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                75.000.000 ISK
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Date:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                2024-08-08
+                            </a>
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            Time:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                10:49
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Status:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                Paid
+                            </a>
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            Reimbursement:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                70.000.000 ISK
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Handler:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                Harrat
+                            </a>
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            Comment:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                                What a shit fit!
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <div class="d-grid gap-2">
+                        <button disabled class="btn btn-secondary" type="button">
+                            Additional Information
+                        </button>
+                      </div>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        This was a coord broadcast from admiral_burk to discord at 2024-08-08 04:01:57.845835 EVE
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" style="visibility: hidden;">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal" id="deleteRequestModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete this SRP request?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

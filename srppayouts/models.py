@@ -25,8 +25,11 @@ class General(models.Model):
 
         managed = False
         default_permissions = ()
-        permissions = (("basic_access", "Can access this app"),
-                       ("admin_access", "Can force to recalculate the table"),)
+        permissions = (("basic_access",         "Can access the view payouts table app"),
+                       ("use_access",           "Can access, use and therefore request reimbursements."),
+                       ("fcing_access",         "Can access the fleet command module to create srp links and view them"),
+                       ("reimbursement_access", "Can access the reimbursement module to accept, reject, and delete srp requests, as well as view statistics"),
+                       ("admin_access",         "Can force to recalculate the view payouts table"),)
 
 class Ship(models.Model):
     name = models.CharField(max_length=255, blank=True, unique=True)

@@ -1,5 +1,6 @@
 {% extends 'allianceauth/base-bs5.html' %}
 {% load i18n %}
+{% load navactive %}
 
 {% block page_title %}
     SRP Payouts
@@ -7,22 +8,114 @@
 
 {% block content %}
     {% block details %}{% endblock %}
+
+    {% if is_user %}
+        {% include 'srppayouts/modules/_submit_request_modal.html' %}
+    {% endif %}
+    {% if is_fc %}
+        {% include 'srppayouts/modules/_create_request_link_modal.html' %}
+    {% endif %}
 {% endblock %}
 
 {% block header_nav_collapse_left %}
 <li class="nav-item">
-    <a class="nav-link active" href="{% url 'srppayouts:index' %}">
+    <a class="{% navactive request 'srppayouts:view_payouts' %} nav-link" href="{% url 'srppayouts:view_payouts' %}">
+        <i class="fa-solid fa-table-list" style="margin-right: 0.25rem;"></i>
         View Payouts
     </a>
 </li>
+{% if is_user %}
+<li class="nav-item">
+    <a class="{% navactive request 'srppayouts:requests' %} nav-link" href="{% url 'srppayouts:requests' %}">
+        <i class="fa-solid fa-money-bill-trend-up" style="margin-right: 0.25rem;"></i>
+        My Requests
+    </a>
+</li>
+<li class="nav-item" style="cursor: pointer;">
+    <a class="{% navactive request 'srppayouts:submit' %} nav-link" data-bs-toggle="modal" data-bs-target="#submitRequestModal">
+        <i class="fa-solid fa-hand-holding-dollar" style="margin-right: 0.25rem;"></i>
+        Submit Request
+    </a>
+</li>
+{% endif %}
 {% endblock %}
 
 {% block header_nav_collapse_right %}
-{% if is_admin %}
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'srppayouts:force_recalc' %}">
-        Force Recalculation
+{% if is_fc or is_reimburser %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle {% navactive request 'srppayouts:fc_all_links' %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-person-military-rifle" style="margin-right: 0.25rem;"></i>
+        Fleet Command
     </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#createRequestLinkModal">
+                <i class="fa-solid fa-link" style="margin-right: 0.25rem;"></i>
+                Create Request Link
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{% url 'srppayouts:fc_all_links' %}">
+                <i class="fa-solid fa-eye" style="margin-right: 0.25rem;"></i>
+                View Request Links
+            </a>
+        </li>
+    </ul>
+</li>
+{% endif %}
+{% if is_reimburser %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle {% navactive request 'srppayouts:reimburser_open_requests srppayouts:reimburser_all_requests srppayouts:reimburser_statistics' %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-person-military-pointing" style="margin-right: 0.25rem;"></i>
+        Reimbursement
+        <span class="badge text-bg-secondary" style="margin-left: 0.125rem;">
+            4
+        </span>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item" href="{% url 'srppayouts:reimburser_open_requests' %}">
+                <i class="fa-solid fa-magnifying-glass-dollar" style="margin-right: 0.25rem;"></i>
+                Open Requests
+                <span class="badge text-bg-secondary" style="margin-left: 0.125rem;">
+                    4
+                </span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{% url 'srppayouts:reimburser_all_requests' %}">
+                <i class="fa-solid fa-money-bill-transfer" style="margin-right: 0.25rem;"></i>
+                All Requests
+            </a>
+        </li>
+        {% if True %}
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <a class="dropdown-item" href="{% url 'srppayouts:reimburser_statistics' %}">
+                <i class="fa-solid fa-chart-simple" style="margin-right: 0.25rem;"></i>
+                Statistics
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</li>
+{% endif %}
+{% if is_admin %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-screwdriver-wrench" style="margin-right: 0.25rem;"></i>
+        Administration
+    </a>
+    <ul class="dropdown-menu">
+        {% if True %}
+        <li>
+            <a class="dropdown-item" href="{% url 'srppayouts:force_recalc' %}">
+                <i class="fa-solid fa-rotate" style="margin-right: 0.25rem;"></i>
+                Force Recalculation
+            </a>
+        </li>
+        {% endif %}
+    </ul>
 </li>
 {% endif %}
 {% endblock %}

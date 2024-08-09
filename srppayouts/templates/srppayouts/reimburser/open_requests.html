@@ -1,0 +1,93 @@
+{% extends 'srppayouts/base.html' %}
+{% load i18n %}
+{% load humanize %}
+
+{% block details %}
+<table class="table" style="vertical-align:middle;">
+    <thead>
+      <tr>
+        <th style="width: auto;">Capsuleer</th>
+        <th>Ship</th>
+        <th>Loss</th>
+        <th style="width: 6rem;">Link</th>
+        <th style="width: 10rem;">Source</th>
+        <th style="width: 10rem;">Requested On</th>
+        <th style="width: 6.35rem;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+            <img src="https://images.evetech.net/characters/2115356431/portrait?size=32" style="margin-right: 0.125rem;">
+            Meowlicious
+        </td>
+        <td>
+            <img src="https://images.evetech.net/types/22456/icon?size=32" style="margin-right: 0.125rem;">
+            Sabre
+        </td>
+        <td>
+            70.000.000 ISK
+        </td>
+        <td>
+            <span class="badge text-bg-secondary">
+                <a href="#">
+                    Killmail
+                </a>
+            </span>
+        </td>
+        <td>
+            <span class="badge text-bg-secondary">
+                Submitted Request
+            </span>
+        </td>
+        <td>
+            2024-09-08
+        </td>
+        <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+            <img src="https://images.evetech.net/characters/2115356431/portrait?size=32" style="margin-right: 0.125rem;">
+            Meowlicious
+        </td>
+        <td>
+            <img src="https://images.evetech.net/types/22456/icon?size=32" style="margin-right: 0.125rem;">
+            Sabre
+        </td>
+        <td>
+            70.000.000 ISK
+        </td>
+        <td>
+            <span class="badge text-bg-secondary">
+                <a href="#">
+                    Killmail
+                </a>
+            </span>
+        </td>
+        <td>
+            <span class="badge text-bg-secondary">
+                SRP Link
+            </span>
+        </td>
+        <td>
+            2024-09-08
+        </td>
+        <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </td>
+      </tr>
+    </tbody>
+</table>
+{% endblock %}
