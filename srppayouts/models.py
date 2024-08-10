@@ -3,6 +3,8 @@ App Models
 Create your models in here
 """
 
+import json
+
 # Django
 from django.db import models
 from django.contrib.auth.decorators import login_required, permission_required
@@ -52,6 +54,57 @@ class Payout(models.Model):
 
     def __str__(self):
         return "(" + self.reimbursement.name + ") " + self.ship.name + ": " + format(self.value, ",") + " ISK"
+
+class Srp(models.Model):
+    killmail_id = models.IntegerField(unique=True)
+    status = models.IntegerField(unique=False)
+    amount = models.IntegerField(unique=False)
+    comment = models.CharField(max_length=255)
+
+    handler_character_id = models.IntegerField(unique=False, default=0)
+    handler_character_name = models.CharField(max_length=255)
+    handler_corporation_id = models.IntegerField(unique=False, default=0)
+    handler_corporation_name = models.CharField(max_length=255)
+    handler_alliance_id = models.IntegerField(unique=False, default=0)
+    handler_alliance_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        status_string = ""
+        if status == 0:
+            status_string = "Open"
+        elif status == 1:
+            status_string = "Paid"
+        elif status == 2:
+            status_string = "Rejected"
+        
+        return str(self.killmail_id) + ": " + status_string
+
+class Request(models.Model):
+    killmail_id = models.IntegerField(unique=True)
+    killmail_hash = models.CharField(max_length=255, default="")
+    killmail_time = models.DateTimeField()
+    requested_on = models.DateTimeField(auto_now_add=True)
+    ship_id = models.IntegerField(unique=False, default=0)
+    ship_name = models.CharField(max_length=255, default="")
+    character_id = models.IntegerField(unique=False, default=0)
+    character_name = models.CharField(max_length=255, default="")
+    corporation_id = models.IntegerField(unique=False, default=0)
+    corporation_name = models.CharField(max_length=255, default="")
+    alliance_id = models.IntegerField(unique=False, default=0)
+    alliance_name = models.CharField(max_length=255, default="")
+    system_id = models.IntegerField(unique=False, default=0)
+    system_name = models.CharField(max_length=255, default="")
+    constellation_id = models.IntegerField(unique=False, default=0)
+    constellation_name = models.CharField(max_length=255, default="")
+    region_id = models.IntegerField(unique=False, default=0)
+    region_name = models.CharField(max_length=255, default="")
+
+    broadcast = models.TextField(default="")
+
+    data = models.JSONField()
+
+    def __str__(self):
+        return str(self.character_name) + ": " + str(self.ship_name)
 
 def recalculate_matrix():
     ship_rows = Ship.objects.all().order_by("name")

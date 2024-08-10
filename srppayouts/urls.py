@@ -11,6 +11,7 @@ app_name: str = "srppayouts"
 urlpatterns = [
     path("", views.view_payouts, name="view_payouts"),
     path("requests/", views.my_requests, name="requests"),
+    path("submit/", views.submit_request, name="submit"),
 
     path("fc/all/", views.all_links, name="fc_all_links"),
 

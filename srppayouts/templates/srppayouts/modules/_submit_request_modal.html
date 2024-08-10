@@ -8,42 +8,40 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form method="post" action="{% url 'srppayouts:submit' %}">
+                {% csrf_token %}
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">
+                    <label class="form-label">
                         Killmail:
                     </label>
-                    <input type="text" class="form-control" placeholder="Killboard Link (zKillboard.com or kb.evetools.com)">
+                    <input type="text" class="form-control" placeholder="Killmail Link (zKillboard.com or kb.evetools.com)" name="killmail">
                     <div class="form-text">
                         Required: Go to your killmail on zKillboard.com or kb.evetools.com, copy the url and paste it here.
-                    </div>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>      
-                    <div class="invalid-feedback">
-                        Please provide a valid city.
-                    </div>                              
+                    </div>                  
                   </div>
                   <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">
+                    <label class="form-label">
                         Additional information:
                     </label>
-                    <textarea class="form-control" placeholder="Ping, broadcast, or why did you die?" rows="5"></textarea>
+                    <textarea class="form-control" placeholder="Ping, broadcast, or why did you die?" rows="5" name="broadcast"></textarea>
                     <div class="form-text">
                         Optional: Insert your fleet commander's ping or broadcast. Make sure to include all information, including when it was sent and who sent it.
                     </div>
                 </div>
+                
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     <i class="fa-solid fa-xmark"></i>
                     Close
                 </button>
-                <button type="button" class="btn btn-success">
+                <button type="submit" value="submit" class="btn btn-success">
                     <i class="fa-solid fa-clipboard-check"></i>
                     Submit
                 </button>
             </div>
+            </form>
         </div>
     </div>
 </div>
