@@ -1,10 +1,10 @@
-<div class="card">
+<div class="card" {% if cell == None %} style="visibility: hidden;" {% endif %}>
     <div class="card-header text-center">
-        <img src="https://image.eveonline.com/types/{{ row.ship_id }}/icon?size=32" width="25px" class="img-fluid rounded">
+        <img src="https://image.eveonline.com/types/{{ cell.ship_id }}/icon?size=32" width="25px" class="img-fluid rounded">
         <div style="display: inline-block; vertical-align:middle;">
-            <b>{{ row.ship_name }}</b>
+            <b>{{ cell.ship_name }}</b>
             lost in 
-            <b>{{ row.system_name }}</b>
+            <b>{{ cell.system_name }}</b>
         </div>
     </div>
     <div class="card-body">
@@ -16,7 +16,7 @@
                     </td>
                     <td class="text-end">
                         <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
-                            {{ row.killmail_id }}
+                            {{ cell.killmail_id }}
                         </a>
                     </td>
                 </tr>
@@ -26,7 +26,7 @@
                     </td>
                     <td class="text-end">
                         <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/character/2115356431/">
-                            {{ row.character_name }}
+                            {{ cell.character_name }}
                         </a>
                     </td>
                 </tr>
@@ -35,7 +35,7 @@
                         Requested on:
                     </td>
                     <td class="text-end">
-                        {{ row.requested_on|date:"F j, Y" }}
+                        {{ cell.requested_on|date:"F j, Y" }}
                     </td>
                 </tr>
                 <tr>
@@ -50,26 +50,26 @@
         </table>
     </div>
     <div class="card-footer text-body-secondary d-flex justify-content-between">
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRequestModal{{ row.killmail_id }}">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRequestModal{{ cell.killmail_id }}">
             <i class="fa-solid fa-trash"></i>
         </button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewRequestModal{{ row.killmail_id }}">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewRequestModal{{ cell.killmail_id }}">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
     </div>
 </div>
 
-<div class="modal modal-lg" id="viewRequestModal{{ row.killmail_id }}" tabindex="-1">
+<div class="modal modal-lg" id="viewRequestModal{{ cell.killmail_id }}" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <img src="https://image.eveonline.com/types/{{ row.ship_id }}/icon?size=32" class="img-fluid rounded">
+            <img src="https://image.eveonline.com/types/{{ cell.ship_id }}/icon?size=32" class="img-fluid rounded">
             <div style="display: inline-block; vertical-align:middle;">
-                <b>{{ row.ship_name }}</b>
+                <b>{{ cell.ship_name }}</b>
                 lost in 
-                <b>{{ row.system_name }}</b>
-                ({{ row.constellation_name }}, {{ row.region_name }})
+                <b>{{ cell.system_name }}</b>
+                ({{ cell.constellation_name }}, {{ cell.region_name }})
             </div>
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -79,38 +79,19 @@
                 <tbody>
                     <tr>
                         <td class="text-start" style="width: 25%;">
-                            Killmail:
-                        </td>
-                        <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/{{ row.killmail_id }}/">
-                                {{ row.killmail_id }}
-                            </a>
-                        </td>
-                        <td class="text-start" style="width: 25%;">
-                            Ship:
-                        </td>
-                        <td class="text-end" style="width: 25%;">
-                            {{ row.ship_name }}
-                            <img src="https://image.eveonline.com/types/{{ row.ship_id }}/icon?size=32" width="25px" style="margin-left: 0.125rem;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-start" style="width: 25%;">
                             Character:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/character/{{ row.character_id }}/">
-                                {{ row.character_name }}
-                                <img src="https://images.evetech.net/characters/{{ row.character_id }}/portrait?size=32" width="25px" style="margin-left: 0.125rem;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/character/{{ cell.character_id }}/">
+                                {{ cell.character_name }}
                             </a>
                         </td>
                         <td class="text-start" style="width: 25%;">
                             Corporation:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/character/{{ row.corporation_id }}/">
-                                {{ row.corporation_name }}
-                                <img src="https://images.evetech.net/corporations/{{ row.corporation_id }}/logo?size=32" width="25px" style="margin-left: 0.125rem;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/character/{{ cell.corporation_id }}/">
+                                {{ cell.corporation_name }}
                             </a>
                         </td>
                     </tr>
@@ -119,30 +100,31 @@
                             Alliance:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/alliance/{{ row_alliance_id }}/">
-                                {{ row.alliance_name }}
-                                <img src="https://images.evetech.net/alliances/{{ row.alliance_id }}/logo?size=32" width="25px" style="margin-left: 0.125rem;">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/alliance/{{ cell.alliance_id }}/">
+                                {{ cell.alliance_name }}
                             </a>
                         </td>
                         <td class="text-start" style="width: 25%;">
-                            System:
+                            Killmail:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            {{ row.system_name }}
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/{{ cell.killmail_id }}/">
+                                {{ cell.killmail_id }}
+                            </a>
                         </td>
                     </tr>
                     <tr>
                         <td class="text-start" style="width: 25%;">
+                            System:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            {{ cell.system_name }}
+                        </td>
+                        <td class="text-start" style="width: 25%;">
                             Region:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            {{ row.region_name }}
-                        </td>
-                        <td class="text-start" style="width: 25%;">
-                            ISK Lost:
-                        </td>
-                        <td class="text-end" style="width: 25%;">
-                            75.000.000 ISK
+                            {{ cell.region_name }}
                         </td>
                     </tr>
                     <tr>
@@ -150,54 +132,61 @@
                             Date:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            {{ row.requested_on|date:"F j, Y" }}
+                            {{ cell.killmail_time|date:"F j, Y" }}
                         </td>
                         <td class="text-start" style="width: 25%;">
                             Time:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            {{ row.requested_on|date:"F j, Y" }}
+                            {{ cell.killmail_time|time:"H:i" }}
                         </td>
                     </tr>
                     <tr>
                         <td class="text-start" style="width: 25%;">
-                            Status:
+                            Ship:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
-                                Paid
-                            </a>
+                            {{ cell.ship_name }}
                         </td>
-                        <td class="text-start" style="width: 25%;">
-                            Reimbursement:
-                        </td>
-                        <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
-                                70.000.000 ISK
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="text-start" style="width: 25%;">
                             Handler:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
-                                Harrat
-                            </a>
+                            Harrat
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            ISK Lost:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            75.000.000 ISK
+                        </td>
+                        <td class="text-start" style="width: 25%;">
+                            Status:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            PAID
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Reimbursement:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            70.000.000 ISK
                         </td>
                         <td class="text-start" style="width: 25%;">
                             Comment:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
-                                What a shit fit!
-                            </a>
+                            What the hell?!
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div class="accordion" id="accordionExample">
+            <div class="accordion">
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <div class="d-grid gap-2">
@@ -208,7 +197,7 @@
                   </h2>
                   <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        {{ row.broadcast }}
+                        {{ cell.broadcast|linebreaksbr }}
                     </div>
                   </div>
                 </div>
@@ -222,7 +211,7 @@
     </div>
 </div>
 
-<div class="modal" id="deleteRequestModal{{ row.killmail_id }}" tabindex="-1">
+<div class="modal" id="deleteRequestModal{{ cell.killmail_id }}" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

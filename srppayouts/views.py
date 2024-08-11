@@ -79,11 +79,32 @@ def my_requests(request: WSGIRequest) -> HttpResponse:
 
     context = generate_context(request)
 
-    user_requests = Request.objects.all()
+    user_requests = Request.objects.all().order_by('-killmail_time')
 
-    print(user_requests)
+    user_requests_count = user_requests.count()
+    user_request_rows = int(user_requests_count / 4)+1
 
-    context.update({'user_requests': user_requests})
+    matrix = []
+    row = []
+    for index, i in enumerate(user_requests):
+        row.append(i)
+
+        if (index + 1) % 4 == 0:
+            matrix.append(row)
+            row = []
+
+    if row:
+        remaining_elements = int(4 - len(row))
+        
+        for i in range(remaining_elements):
+            row.append(None)
+
+        matrix.append(row)
+
+    print(matrix)
+
+    context.update({'user_requests': user_requests,
+                    'test_matrix': matrix})
 
     return render(request, "srppayouts/requests.html", context)
 

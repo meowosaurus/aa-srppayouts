@@ -4,28 +4,67 @@
 {% load icons_tags %}
 
 {% block details %}
-{% if False %}
 <div class="row">
-    <div class="col">
-        {% include 'srppayouts/modules/_requests_card.html' %}
+    <div class="col-sm-2">
+        {% if True %}
+        <div class="d-flex">
+            <div style="margin-right: 0.5rem; margin-top: 0.125rem;">
+                Select
+            </div>
+            <select class="form-select form-select-sm" id="selectInput">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <div style="margin-left: 0.5rem; margin-top: 0.125rem;">
+                entries.
+            </div>
+        </div>
+        {% endif %}
     </div>
-    <div class="col">
-        {% include 'srppayouts/modules/_requests_card.html' %}
+    <div class="col-sm-7">
+
     </div>
-    <div class="col">
-        {% include 'srppayouts/modules/_requests_card.html' %}
-    </div>
-    <div class="col">
-        {% include 'srppayouts/modules/_requests_card.html' %}
+    <div class="col-sm-3">
+        <div class="input-group mb-3">
+            <span class="input-group-text">Search</span>
+            <input type="text" id="searchInput" placeholder="Ship.." class="form-control" id="basic-url" aria-describedby="basic-addon3">
+        </div>
     </div>
 </div>
-{% endif %}
 
-<div class="row">
-    {% for row in user_requests %}
+{% for row in test_matrix %}
+    <div class="row" style="margin-bottom: 1rem;">
+    {% for cell in row %}
         <div class="col">
             {% include 'srppayouts/modules/_requests_card.html' %}
         </div>
     {% endfor %}
+    </div>
+{% endfor %}
+
+{% if False %}
+<div class="row">
+    <div class="col-sm-4">
+        <nav>
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4">
+        <div id="showingCount" class="float-end">
+            Showing x of y entries
+        </div>
+    </div>
 </div>
+{% endif %}
+
 {% endblock %}
