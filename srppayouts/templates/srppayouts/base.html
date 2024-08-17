@@ -18,12 +18,6 @@
 {% endblock %}
 
 {% block header_nav_collapse_left %}
-<li class="nav-item">
-    <a class="{% navactive request 'srppayouts:view_payouts' %} nav-link" href="{% url 'srppayouts:view_payouts' %}">
-        <i class="fa-solid fa-table-list" style="margin-right: 0.25rem;"></i>
-        View Payouts
-    </a>
-</li>
 {% if is_user %}
 <li class="nav-item">
     <a class="{% navactive request 'srppayouts:requests' %} nav-link" href="{% url 'srppayouts:requests' %}">
@@ -31,6 +25,14 @@
         My Requests
     </a>
 </li>
+{% endif %}
+<li class="nav-item">
+    <a class="{% navactive request 'srppayouts:view_payouts' %} nav-link" href="{% url 'srppayouts:view_payouts' %}">
+        <i class="fa-solid fa-table-list" style="margin-right: 0.25rem;"></i>
+        View Payouts
+    </a>
+</li>
+{% if is_user %}
 <li class="nav-item" style="cursor: pointer;">
     <a class="{% navactive request 'srppayouts:submit' %} nav-link" data-bs-toggle="modal" data-bs-target="#submitRequestModal">
         <i class="fa-solid fa-hand-holding-dollar" style="margin-right: 0.25rem;"></i>
@@ -69,7 +71,7 @@
         <i class="fa-solid fa-person-military-pointing" style="margin-right: 0.25rem;"></i>
         Reimbursement
         <span class="badge text-bg-secondary" style="margin-left: 0.125rem;">
-            4
+            {{ open_requests_count }}
         </span>
     </a>
     <ul class="dropdown-menu">
@@ -78,7 +80,7 @@
                 <i class="fa-solid fa-magnifying-glass-dollar" style="margin-right: 0.25rem;"></i>
                 Open Requests
                 <span class="badge text-bg-secondary" style="margin-left: 0.125rem;">
-                    4
+                    {{ open_requests_count }}
                 </span>
             </a>
         </li>

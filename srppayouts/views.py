@@ -14,6 +14,8 @@ from .models import *
 
 def generate_context(request: WSGIRequest):
 
+    open_requests_count = 0
+
     if request.user.has_perm('srppayouts.use_access'):
         is_user = True
     else:
@@ -25,6 +27,7 @@ def generate_context(request: WSGIRequest):
         is_fc = False
 
     if request.user.has_perm('srppayouts.reimbursement_access'):
+        open_requests_count = Request.objects.filter(review=None).count()
         is_reimburser = True
     else:
         is_reimburser = False
@@ -37,7 +40,8 @@ def generate_context(request: WSGIRequest):
     context = {"is_user": is_user,
                "is_fc": is_fc,
                "is_reimburser": is_reimburser,
-               "is_admin": is_admin}
+               "is_admin": is_admin,
+               "open_requests_count": open_requests_count}
 
     return context
 
@@ -79,10 +83,9 @@ def my_requests(request: WSGIRequest) -> HttpResponse:
 
     context = generate_context(request)
 
-    user_requests = Request.objects.all().order_by('-killmail_time')
+    user_requests = Request.objects.filter(requester=request.user).order_by('-killmail_time')
 
     user_requests_count = user_requests.count()
-    user_request_rows = int(user_requests_count / 4)+1
 
     matrix = []
     row = []
@@ -104,6 +107,7 @@ def my_requests(request: WSGIRequest) -> HttpResponse:
     print(matrix)
 
     context.update({'user_requests': user_requests,
+                    'user_requests_count': user_requests_count,
                     'test_matrix': matrix})
 
     return render(request, "srppayouts/requests.html", context)
@@ -117,7 +121,7 @@ def submit_request(request: WSGIRequest) -> HttpResponse:
 
     ZKILLBOARD_REGEX = r'^https://zkillboard\.com/kill/(?P<kill_id>\d+)/$'
     EVETOOLS_REGEX = r'^https://kb\.evetools\.org/kill/(?P<kill_id>\d+)/$'
-    ESI_REGEX = r'^https://esi\.evetech\.net/latest/killmails/(?P<kill_id>\d+)/(?P<kill_hash>\d+)/$'
+    ESI_REGEX = r'^https://esi\.evetech\.net/latest/killmails/(?P<kill_id>\d+)/(?P<kill_hash>[a-fA-F0-9]+)/$'
 
     killmail_id = 0
     killmail_hash = ""
@@ -157,7 +161,10 @@ def submit_request(request: WSGIRequest) -> HttpResponse:
 
         killmail_id = kill_match.group('kill_id')
         killmail_hash = kill_match.group('kill_hash')
+
+        print("bla")
     else:
+        # TODO: Send an erorr to the users new view
         print("Error")
 
     esi_url = "https://esi.evetech.net/latest/killmails/" + killmail_id + "/" + killmail_hash + "/"
@@ -166,41 +173,53 @@ def submit_request(request: WSGIRequest) -> HttpResponse:
         'Accept-Encoding': 'gzip'
     }
 
+    print(killmail_id)
+    print(killmail_hash)
+
     esi_response = requests.get(esi_url, headers=esi_headers)
     esi_data = esi_response.json()
 
+    # To get the character name and corporation ID from the character ID
     esi_player_public_info = requests.get("https://esi.evetech.net/latest/characters/" + str(esi_data['victim']['character_id']) + "/?datasource=tranquility", 
                                            headers=esi_headers)
     player_public_info_data = esi_player_public_info.json()
 
+    # To get the corporation name and alliance ID from the corporation ID
     esi_corp_public_info = requests.get("https://esi.evetech.net/latest/corporations/" + str(esi_data['victim']['corporation_id']) + "/?datasource=tranquility",
                                         headers=esi_headers)
     corp_public_info_data = esi_corp_public_info.json()
 
+    # To get the alliance name from the alliance ID
     esi_alliance_public_info = requests.get("https://esi.evetech.net/latest/alliances/" + str(esi_data['victim']['alliance_id']) + "/?datasource=tranquility",
                                             headers=esi_headers)
     corp_alliance_info_data = esi_alliance_public_info.json()
 
+    # To get the ship name from the ship ID
     esi_ship_info = requests.get("https://esi.evetech.net/latest/universe/types/" + str(esi_data['victim']['ship_type_id']) + "/?datasource=tranquility&language=en",
                                  headers=esi_headers)
     esi_ship_data = esi_ship_info.json()
 
+    # To get the solar system name and constellation ID from the solar system ID
     esi_solar_info = requests.get("https://esi.evetech.net/latest/universe/systems/" + str(esi_data['solar_system_id']) + "/?datasource=tranquility&language=en",
                                    headers=esi_headers)
     esi_solar_data = esi_solar_info.json()
 
+    # To get the constellation name and region ID from the constellation ID
     esi_const_info = requests.get("https://esi.evetech.net/latest/universe/constellations/" + str(esi_solar_data['constellation_id']) + "/?datasource=tranquility&language=en",
                                    headers=esi_headers)
     esi_const_data = esi_const_info.json()
 
+    # To get the region name from the region ID
     esi_region_info = requests.get("https://esi.evetech.net/latest/universe/regions/" + str(esi_const_data['region_id']) + "/?datasource=tranquility&language=en",
                                     headers=esi_headers)
     esi_region_data = esi_region_info.json()
 
     new_srp_request = Request()
+    new_srp_request.requester = request.user
     new_srp_request.killmail_id = killmail_id
     new_srp_request.killmail_hash = killmail_hash
     new_srp_request.killmail_time = esi_data['killmail_time']
+    new_srp_request.killmail_amount = data[0]['zkb']['totalValue']
     new_srp_request.ship_id = esi_data['victim']['ship_type_id']
     new_srp_request.ship_name = esi_ship_data['name']
     new_srp_request.character_id = esi_data['victim']['character_id']
@@ -228,6 +247,10 @@ def all_links(request: WSGIRequest) -> HttpResponse:
 
     context = generate_context(request)
 
+    all_reqs = Request.objects.all.order_by('requested_on')
+
+    context.update({'all_requests': all_reqs})
+
     return render(request, "srppayouts/fc/all_links.html", context)
 
 ### REIMBURSER ###
@@ -236,6 +259,10 @@ def all_links(request: WSGIRequest) -> HttpResponse:
 def open_requests(request: WSGIRequest) -> HttpResponse:
 
     context = generate_context(request)
+
+    open_reqs = Request.objects.filter(review=None).order_by('requested_on')
+
+    context.update({'open_requests': open_reqs})
 
     return render(request, "srppayouts/reimburser/open_requests.html", context)
     

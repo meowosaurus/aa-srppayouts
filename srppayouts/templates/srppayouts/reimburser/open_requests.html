@@ -3,34 +3,36 @@
 {% load humanize %}
 
 {% block details %}
-<table class="table" style="vertical-align:middle;">
+<table class="table table-responsive" style="vertical-align:middle;">
     <thead>
       <tr>
         <th style="width: auto;">Capsuleer</th>
-        <th>Ship</th>
-        <th>Loss</th>
-        <th style="width: 6rem;">Link</th>
-        <th style="width: 10rem;">Source</th>
-        <th style="width: 10rem;">Requested On</th>
+        <th style="width: auto;">Ship</th>
+        <th style="width: auto;">Loss</th>
+        <th style="width: auto;">Link</th>
+        <th style="width: auto;">Source</th>
+        <th style="width: auto;">Requested On</th>
         <th style="width: 6.35rem;">Actions</th>
       </tr>
     </thead>
     <tbody>
+        {% for request in open_requests %}
       <tr>
         <td>
-            <img src="https://images.evetech.net/characters/2115356431/portrait?size=32" style="margin-right: 0.125rem;">
-            Meowlicious
+            <img src="https://images.evetech.net/characters/{{ request.character_id }}/portrait?size=32" style="margin-right: 0.125rem;">
+            <a target="_blank" href="https://zkillboard.com/character/{{ request.character_id }}/">{{ request.character_name }}</a>
+            ({{ request.requester }})
         </td>
         <td>
-            <img src="https://images.evetech.net/types/22456/icon?size=32" style="margin-right: 0.125rem;">
-            Sabre
+            <img src="https://images.evetech.net/types/{{ request.ship_id }}/icon?size=32" style="margin-right: 0.125rem;">
+            {{ request.ship_name }}
         </td>
         <td>
-            70.000.000 ISK
+            {{ request.killmail_amount|intcomma }} ISK
         </td>
         <td>
             <span class="badge text-bg-secondary">
-                <a href="#">
+                <a target="_blank" href="https://zkillboard.com/kill/{{ request.killmail_id }}/">
                     Killmail
                 </a>
             </span>
@@ -41,53 +43,24 @@
             </span>
         </td>
         <td>
-            2024-09-08
+            {{ request.requested_on }}
         </td>
         <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#">
-                <i class="fa-solid fa-pen-to-square"></i>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewOpenRequest{{ request.killmail_id }}">
+                <i class="fa-solid fa-pen"></i>
             </button>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteOpenRequest{{ request.killmail_id }}">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </td>
       </tr>
-      <tr>
-        <td>
-            <img src="https://images.evetech.net/characters/2115356431/portrait?size=32" style="margin-right: 0.125rem;">
-            Meowlicious
-        </td>
-        <td>
-            <img src="https://images.evetech.net/types/22456/icon?size=32" style="margin-right: 0.125rem;">
-            Sabre
-        </td>
-        <td>
-            70.000.000 ISK
-        </td>
-        <td>
-            <span class="badge text-bg-secondary">
-                <a href="#">
-                    Killmail
-                </a>
-            </span>
-        </td>
-        <td>
-            <span class="badge text-bg-secondary">
-                SRP Link
-            </span>
-        </td>
-        <td>
-            2024-09-08
-        </td>
-        <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </button>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </td>
-      </tr>
+      {% endfor %}
     </tbody>
 </table>
+
+{% for request in open_requests %}
+    {% include 'srppayouts/reimburser/modules/_open_request_modal.html' %}
+    {% include 'srppayouts/reimburser/modules/_delete_request_modal.html' %}
+{% endfor %}
+
 {% endblock %}

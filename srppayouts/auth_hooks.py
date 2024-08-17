@@ -9,6 +9,7 @@ from allianceauth.services.hooks import MenuItemHook, UrlHook
 
 # AA srppayouts App
 from srppayouts import urls
+from .models import Request
 
 
 class srppayoutsMenuItem(MenuItemHook):
@@ -18,9 +19,9 @@ class srppayoutsMenuItem(MenuItemHook):
         # setup menu entry for sidebar
         MenuItemHook.__init__(
             self,
-            _("SRP Payouts"),
+            _("Ship Replacement"),
             "fas fa-hand-holding-usd fa-fw",
-            "srppayouts:view_payouts",
+            "srppayouts:requests",
             navactive=["srppayouts:"],
         )
 
@@ -28,7 +29,8 @@ class srppayoutsMenuItem(MenuItemHook):
         """Render the menu item"""
 
         if request.user.has_perm("srppayouts.reimburser_access"):
-            self.count = 4
+            open_requests_count = Request.objects.filter(review=None).count()
+            self.count = open_requests_count
 
         if request.user.has_perm("srppayouts.basic_access"):
             return MenuItemHook.render(self, request)

@@ -56,10 +56,9 @@ class Payout(models.Model):
         return "(" + self.reimbursement.name + ") " + self.ship.name + ": " + format(self.value, ",") + " ISK"
 
 class Srp(models.Model):
-    killmail_id = models.IntegerField(unique=True)
-    status = models.IntegerField(unique=False)
+    reimbursement = models.IntegerField(unique=False)
     amount = models.IntegerField(unique=False)
-    comment = models.CharField(max_length=255)
+    comment = models.CharField(max_length=255, blank=True)
 
     handler_character_id = models.IntegerField(unique=False, default=0)
     handler_character_name = models.CharField(max_length=255)
@@ -70,19 +69,19 @@ class Srp(models.Model):
 
     def __str__(self):
         status_string = ""
-        if status == 0:
-            status_string = "Open"
-        elif status == 1:
+        if self.reimbursement == 0:
             status_string = "Paid"
-        elif status == 2:
+        elif self.reimbursement == 1:
             status_string = "Rejected"
         
-        return str(self.killmail_id) + ": " + status_string
+        return status_string
 
 class Request(models.Model):
     killmail_id = models.IntegerField(unique=True)
     killmail_hash = models.CharField(max_length=255, default="")
     killmail_time = models.DateTimeField()
+    killmail_amount = models.IntegerField(unique=False, default=0)
+    requester = models.CharField(max_length=255, default='')
     requested_on = models.DateTimeField(auto_now_add=True)
     ship_id = models.IntegerField(unique=False, default=0)
     ship_name = models.CharField(max_length=255, default="")
@@ -102,6 +101,8 @@ class Request(models.Model):
     broadcast = models.TextField(default="")
 
     data = models.JSONField()
+
+    review = models.ForeignKey(Srp, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.character_name) + ": " + str(self.ship_name)

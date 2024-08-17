@@ -4,9 +4,11 @@
 {% load icons_tags %}
 
 {% block details %}
+
+{% if user_requests_count > 0 %}
 <div class="row">
     <div class="col-sm-2">
-        {% if True %}
+        {% if False %}
         <div class="d-flex">
             <div style="margin-right: 0.5rem; margin-top: 0.125rem;">
                 Select
@@ -24,13 +26,17 @@
         {% endif %}
     </div>
     <div class="col-sm-7">
-
+        <h3 style="text-align: center; margin-bottom: 1rem;">
+            Showing the last 20 requests
+        </h3>
     </div>
     <div class="col-sm-3">
+        {% if False %}
         <div class="input-group mb-3">
             <span class="input-group-text">Search</span>
             <input type="text" id="searchInput" placeholder="Ship.." class="form-control" id="basic-url" aria-describedby="basic-addon3">
         </div>
+        {% endif %}
     </div>
 </div>
 
@@ -65,6 +71,11 @@
         </div>
     </div>
 </div>
+{% endif %}
+{% else %}
+<div class="alert alert-info" role="alert">
+    Nothing to see here, because you didn't request any replacements for you ships.
+</div>  
 {% endif %}
 
 {% endblock %}

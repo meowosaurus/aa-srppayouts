@@ -1,6 +1,8 @@
+{% load humanize %}
+
 <div class="card" {% if cell == None %} style="visibility: hidden;" {% endif %}>
     <div class="card-header text-center">
-        <img src="https://image.eveonline.com/types/{{ cell.ship_id }}/icon?size=32" width="25px" class="img-fluid rounded">
+        <img src="https://image.eveonline.com/types/{{ cell.ship_id }}/icon?size=32" width="25px" class="img-fluid rounded" style="margin-right: 0.1rem;">
         <div style="display: inline-block; vertical-align:middle;">
             <b>{{ cell.ship_name }}</b>
             lost in 
@@ -15,18 +17,8 @@
                         Killmail:
                     </td>
                     <td class="text-end">
-                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/119867443/">
+                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/kill/{{ cell.killmail_id }}/">
                             {{ cell.killmail_id }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Requester:
-                    </td>
-                    <td class="text-end">
-                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://zkillboard.com/character/2115356431/">
-                            {{ cell.character_name }}
                         </a>
                     </td>
                 </tr>
@@ -43,16 +35,41 @@
                         Status:
                     </td>
                     <td class="text-end">
-                        Open
+                        {% if cell.review %}
+                            {% if cell.review.reimbursement == 0 %}
+                                Paid
+                            {% else %}
+                                Rejected
+                            {% endif %}
+                        {% else %}
+                            Open
+                        {% endif %}
                     </td>
                 </tr>
+                {% if cell.review.reimbursement == 0 %}
+                <tr>
+                    <td>
+                        Amount:
+                    </td>
+                    <td class="text-end">
+                        {{ cell.review.amount|intcomma }} ISK
+                    </td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
     <div class="card-footer text-body-secondary d-flex justify-content-between">
+        {% if cell.review %}
+        <button disabled type="button" class="btn btn-danger" style="visibility: hidden;">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+        {% else %}
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRequestModal{{ cell.killmail_id }}">
             <i class="fa-solid fa-trash"></i>
         </button>
+        {% endif %}
+        
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewRequestModal{{ cell.killmail_id }}">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
@@ -64,7 +81,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <img src="https://image.eveonline.com/types/{{ cell.ship_id }}/icon?size=32" class="img-fluid rounded">
+            <img src="https://image.eveonline.com/types/{{ cell.ship_id }}/icon?size=32" class="img-fluid rounded" style="margin-right: 0.2rem;">
             <div style="display: inline-block; vertical-align:middle;">
                 <b>{{ cell.ship_name }}</b>
                 lost in 
@@ -118,13 +135,17 @@
                             System:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            {{ cell.system_name }}
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://evemaps.dotlan.net/map/{{ cell.region_name }}/{{ cell.system_name }}">
+                                {{ cell.system_name }}
+                            </a>
                         </td>
                         <td class="text-start" style="width: 25%;">
                             Region:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            {{ cell.region_name }}
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" target="_blank" href="https://evemaps.dotlan.net/map/{{ cell.region_name }}/">
+                                {{ cell.region_name }}
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -149,41 +170,48 @@
                             {{ cell.ship_name }}
                         </td>
                         <td class="text-start" style="width: 25%;">
-                            Handler:
-                        </td>
-                        <td class="text-end" style="width: 25%;">
-                            Harrat
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-start" style="width: 25%;">
                             ISK Lost:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            75.000.000 ISK
+                            {{ cell.killmail_amount|intcomma }} ISK
+                        </td>
+                    </tr>
+                    {% if cell.review %}
+                    <tr>
+                        <td class="text-start" style="width: 25%;">
+                            Handler:
+                        </td>
+                        <td class="text-end" style="width: 25%;">
+                            {{ cell.review.handler_character_name }}
                         </td>
                         <td class="text-start" style="width: 25%;">
                             Status:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            PAID
+                            {% if cell.review.status == 0 %}
+                                Paid
+                            {% else %}
+                                Rejected
+                            {% endif %}
                         </td>
                     </tr>
-                    
                     <tr>
                         <td class="text-start" style="width: 25%;">
                             Reimbursement:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            70.000.000 ISK
+                            {{ cell.review.amount|intcomma }} ISK
                         </td>
+                        {% if cell.review.comment %}
                         <td class="text-start" style="width: 25%;">
                             Comment:
                         </td>
                         <td class="text-end" style="width: 25%;">
-                            What the hell?!
+                            {{ cell.review.comment }}
                         </td>
+                        {% endif %}
                     </tr>
+                    {% endif %}
                 </tbody>
             </table>
             <div class="accordion">
@@ -211,6 +239,7 @@
     </div>
 </div>
 
+{% if not cell.review %}
 <div class="modal" id="deleteRequestModal{{ cell.killmail_id }}" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -219,7 +248,15 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Modal body text goes here.</p>
+            <div class="alert alert-secondary" role="alert">
+                <span class="badge text-bg-danger">Important</span>
+                After you have received a reimbursement, you will no longer be able to delete a request!
+            </div>              
+          <p>
+            Do you really want to delete this request?
+            <br /><br />
+            You can request a reimbursement for the same killmail if you delete it now.
+          </p>
         </div>
         <div class="modal-footer d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -228,3 +265,4 @@
       </div>
     </div>
 </div>
+{% endif %}
