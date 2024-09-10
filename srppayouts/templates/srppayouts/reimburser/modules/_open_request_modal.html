@@ -19,18 +19,19 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col">
-                    {% include 'srppayouts/reimburser/modules/_fitting_view.html' %}
+                    {% include 'srppayouts/reimburser/modules/_modal_table_view.html' %}
                 </div>
                 <div class="col">
-                    {% include 'srppayouts/reimburser/modules/_modal_table_view.html' %}
+                    {% include 'srppayouts/reimburser/modules/_fitting_view.html' %}
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    Here would be the additional information
+                    {% include 'srppayouts/reimburser/modules/_additional_info.html' %}
                 </div>
                 <div class="col">
-                    You could enter things here
+                    {% include 'srppayouts/reimburser/modules/_alert.html' %}
+                    {% include 'srppayouts/reimburser/modules/_form.html' %}
                 </div>
             </div>
         </div>

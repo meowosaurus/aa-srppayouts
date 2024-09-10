@@ -1,8 +1,94 @@
-<table class="table">
+<table class="table table-hover table-striped">
     <tbody>
+        <tr>
+          <th class="text-start">
+            Requester:
+          </th>
+          <th class="text-end">
+            <a target="_blank" href="">
+              {{ request.requester }}
+            </a>
+          </th>
+        </tr>
+        <tr>
+          <th class="text-start">
+            Character:
+          </th>
+          <th class="text-end">
+            <a target="_blank" href="https://zkillboard.com/character/{{ request.character_id }}/">
+              {{ request.character_name }}
+            </a>
+          </th>
+        </tr>
       <tr>
-        <th>Character</th>
-        <th>Meowlicous</th>
+        <th class="text-start">
+          Corporation:
+        </th>
+        <th class="text-end">
+          <a target="_blank" href="https://zkillboard.com/corporation/{{ request.corporation_id }}/">
+            {{ request.corporation_name }}
+          </a>
+        </th>
+      </tr>
+      <tr>
+        <th class="text-start">
+          Alliance:
+        </th>
+        <th class="text-end">
+          <a target="_blank" href="https://zkillboard.com/alliance/{{ request.alliance_id }}/">
+            {{ request.alliance_name }}
+          </a>
+        </th>
+      </tr>
+      <tr>
+        <th class="text-start">
+          Killmail:
+        </th>
+        <th class="text-end">
+          <a target="_blank" href="https://zkillboard.com/kill/{{ request.killmail_id }}/">
+            {{ request.killmail_id }}
+          </a>
+        </th>
+      </tr>
+      <tr>
+        <th class="text-start">
+          Ship:
+        </th>
+        <th class="text-end">
+          {{ request.ship_name }}
+        </th>
+      </tr>
+      <tr>
+        <th class="text-start">
+          System:
+        </th>
+        <th class="text-end">
+          {{ request.system_name }}
+        </th>
+      </tr>
+      <tr>
+        <th class="text-start">
+          Region:
+        </th>
+        <th class="text-end">
+          {{ request.region_name }}
+        </th>
+      </tr>
+      <tr>
+        <th class="text-start">
+          Date:
+        </th>
+        <th class="text-end">
+          {{ request.killmail_time|date:"F j, Y" }}
+        </th>
+      </tr>
+      <tr>
+        <th class="text-start">
+          Time:
+        </th>
+        <th class="text-end">
+          {{ request.killmail_time|time:"H:i" }}
+        </th>
       </tr>
     </tbody>
 </table>

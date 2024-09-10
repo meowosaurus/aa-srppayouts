@@ -107,6 +107,10 @@ class Request(models.Model):
     def __str__(self):
         return str(self.character_name) + ": " + str(self.ship_name)
 
+class ShipData(models.Model):
+    killmail_id = models.IntegerField(unique=True)
+    
+
 def recalculate_matrix():
     ship_rows = Ship.objects.all().order_by("name")
     columns = Reimbursement.objects.all().order_by("index")
